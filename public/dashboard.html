@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="web_dashboard" name="shell-type" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        @layer base {
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                overscroll-behavior: none;
+            }
+
+            main>:first-child {
+                margin-top: 0 !important;
+            }
+
+            main>:last-child {
+                margin-bottom: 0 !important;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+        id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {"colors": {"on-primary-fixed": "#002113", "on-secondary": "#003640", "tertiary-fixed": "#d8e2ff", "primary-fixed": "#6ffbbe", "inverse-on-surface": "#2c303a", "secondary-container": "#03b5d3", "on-tertiary": "#002e6a", "inverse-surface": "#dfe2ef", "outline": "#86948a", "inverse-primary": "#006c49", "on-tertiary-fixed": "#001a42", "tertiary": "#adc6ff", "on-secondary-fixed": "#001f26", "surface-container-low": "#181b25", "tertiary-container": "#71a1ff", "secondary-fixed-dim": "#4cd7f6", "surface-tint": "#4edea3", "on-primary-container": "#00422b", "surface-bright": "#353943", "surface-variant": "#31353f", "primary-fixed-dim": "#4edea3", "on-background": "#dfe2ef", "surface-dim": "#0f131c", "on-error": "#690005", "on-surface-variant": "#bbcabf", "surface-container-highest": "#31353f", "primary-container": "#10b981", "surface": "#0f131c", "error-container": "#93000a", "outline-variant": "#3c4a42", "primary": "#4edea3", "on-secondary-container": "#00424e", "on-primary": "#003824", "surface-container-high": "#262a34", "background": "#0f131c", "on-tertiary-fixed-variant": "#004395", "surface-container-lowest": "#0a0e17", "on-surface": "#dfe2ef", "on-error-container": "#ffdad6", "tertiary-fixed-dim": "#adc6ff", "secondary-fixed": "#acedff", "error": "#ffb4ab", "secondary": "#4cd7f6", "on-secondary-fixed-variant": "#004e5c", "on-tertiary-container": "#00367a", "on-primary-fixed-variant": "#005236", "surface-container": "#1c1f29"}, "borderRadius": {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"}, "spacing": {"gutter-desktop": "1.5rem", "space-md": "1rem", "margin-desktop": "2rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "space-xl": "2.5rem", "gutter": "1rem", "margin": "1rem"}, "fontFamily": {"headline-lg": ["Inter"], "headline-md": ["Inter"], "headline-lg-mobile": ["Inter"], "body-lg": ["Inter"], "code-md": ["JetBrains Mono"], "label-xs": ["JetBrains Mono"], "code-sm": ["JetBrains Mono"], "body-md": ["Inter"], "label-md": ["JetBrains Mono"], "headline-xl-mobile": ["Inter"], "body-sm": ["Inter"], "code-lg": ["JetBrains Mono"], "headline-xl": ["Inter"]}, "fontSize": {"headline-lg": ["2rem", {"lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "600"}], "headline-md": ["1.25rem", {"lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "600"}], "headline-lg-mobile": ["1.5rem", {"lineHeight": "2rem", "letterSpacing": "-0.01em", "fontWeight": "600"}], "body-lg": ["1rem", {"lineHeight": "1.5rem", "fontWeight": "400"}], "code-md": ["0.875rem", {"lineHeight": "1.25rem", "fontWeight": "500"}], "label-xs": ["0.625rem", {"lineHeight": "0.875rem", "letterSpacing": "0.08em", "fontWeight": "600"}], "code-sm": ["0.75rem", {"lineHeight": "1rem", "fontWeight": "500"}], "body-md": ["0.875rem", {"lineHeight": "1.375rem", "fontWeight": "400"}], "label-md": ["0.75rem", {"lineHeight": "1rem", "letterSpacing": "0.06em", "fontWeight": "600"}], "headline-xl-mobile": ["2rem", {"lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700"}], "body-sm": ["0.75rem", {"lineHeight": "1.125rem", "fontWeight": "400"}], "code-lg": ["1.5rem", {"lineHeight": "2rem", "letterSpacing": "-0.02em", "fontWeight": "600"}], "headline-xl": ["3rem", {"lineHeight": "3.5rem", "letterSpacing": "-0.03em", "fontWeight": "700"}]}}}}</script>
+</head>
+
+<body
+    class="bg-background font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container">
+    <aside
+        class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest/90 backdrop-blur-xl z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+        <div class="flex flex-col">
+            <div class="h-16 px-space-md flex items-center justify-between bg-surface-container-lowest/50">
+                <div class="flex items-center gap-space-sm">
+                    <div
+                        class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary font-code-md text-code-md font-bold">
+                        Σ</div>
+                    <div class="flex flex-col"><span
+                            class="font-headline-md text-headline-md leading-none text-on-surface tracking-tight font-bold">SIGF</span><span
+                            class="font-label-xs text-label-xs text-secondary tracking-wider uppercase">FinOps
+                            Core</span></div>
+                </div><span
+                    class="font-label-xs text-label-xs px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface-variant font-code-sm">v1.0</span>
+            </div>
+            <div class="px-space-md py-space-sm">
+                <div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-space-xs"><span
+                        class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-wider">System
+                        Ingestion</span>
+                    <div class="flex items-center justify-between font-code-sm text-code-sm"><span
+                            class="text-on-surface-variant flex items-center gap-1"><span
+                                class="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>Cron
+                            Sync</span><span class="text-primary font-bold">08:00 AM</span></div>
+                    <div class="flex items-center justify-between font-code-sm text-code-sm"><span
+                            class="text-on-surface-variant flex items-center gap-1"><span
+                                class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>TG Gateway</span><span
+                            class="text-secondary font-bold">82ms</span></div>
+                </div>
+            </div>
+            <nav class="px-space-sm py-space-sm flex flex-col gap-space-xs"
+                data-active-classes="bg-surface-container-high text-primary font-bold shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+                <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-code-md text-code-md"
+                    data-path="overview-telemetry" href="#"><span
+                        class="material-symbols-outlined text-[18px]">terminal</span>Overview &amp; Telemetry</a><a
+                    class="flex items-center gap-space-sm px-space-md py-space-sm rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-code-md text-code-md"
+                    data-path="notion-database-sync" href="#"><span
+                        class="material-symbols-outlined text-[18px]">sync_alt</span>Notion Database Sync</a><a
+                    class="flex items-center gap-space-sm px-space-md py-space-sm rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-code-md text-code-md"
+                    data-path="telegram-stream" href="#"><span
+                        class="material-symbols-outlined text-[18px]">send</span>Telegram Stream</a><a
+                    class="flex items-center gap-space-sm px-space-md py-space-sm rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-code-md text-code-md"
+                    data-path="subscriptions-cron" href="#"><span
+                        class="material-symbols-outlined text-[18px]">schedule</span>Subscriptions &amp; Cron</a><a
+                    class="flex items-center gap-space-sm px-space-md py-space-sm rounded text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all font-code-md text-code-md"
+                    data-path="api-architecture" href="#"><span
+                        class="material-symbols-outlined text-[18px]">schema</span>API &amp; Architecture</a></nav>
+        </div>
+        <div class="p-space-md bg-surface-container-lowest/60 flex items-center justify-between">
+            <div class="flex items-center gap-space-sm">
+                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span
+                        class="material-symbols-outlined text-on-primary text-[18px]">person</span></div>
+                <div class="flex flex-col"><span
+                        class="font-body-sm text-body-sm text-on-surface font-semibold leading-tight">Guillermo</span><span
+                        class="font-label-xs text-label-xs text-on-surface-variant">SWE @ 18y</span></div>
+            </div><span
+                class="material-symbols-outlined text-on-surface-variant text-[20px] hover:text-on-surface cursor-pointer transition-colors">tune</span>
+        </div>
+    </aside>
+    <div class="pl-72">
+        <header
+            class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl z-40 px-space-lg flex items-center justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+            <div class="flex items-center gap-space-lg">
+                <div
+                    class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low font-label-xs text-label-xs text-primary font-bold">
+                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>LIVE SYSTEM</div>
+                <div class="hidden xl:flex items-center gap-space-md">
+                    <div class="flex items-center gap-1 font-label-xs text-label-xs text-on-surface-variant"><span
+                            class="text-on-surface-variant">NOTION:</span><span
+                            class="text-primary font-code-sm text-code-sm">Connected</span></div>
+                    <div class="flex items-center gap-1 font-label-xs text-label-xs text-on-surface-variant"><span
+                            class="text-on-surface-variant">TELEGRAM:</span><span
+                            class="text-secondary font-code-sm text-code-sm">Active @ 82ms</span></div>
+                    <div class="flex items-center gap-1 font-label-xs text-label-xs text-on-surface-variant"><span
+                            class="text-on-surface-variant">WORKER:</span><span
+                            class="text-tertiary font-code-sm text-code-sm">08:00 AM Active</span></div>
+                </div>
+            </div>
+            <div class="flex items-center gap-space-md">
+                <nav class="hidden lg:flex items-center gap-space-md" data-active-classes="text-primary font-bold"><a
+                        class="font-code-sm text-code-sm text-on-surface-variant hover:text-on-surface transition-colors"
+                        data-path="overview-telemetry" href="#">Telemetry</a><a
+                        class="font-code-sm text-code-sm text-on-surface-variant hover:text-on-surface transition-colors"
+                        data-path="notion-database-sync" href="#">Notion DaaS</a><a
+                        class="font-code-sm text-code-sm text-on-surface-variant hover:text-on-surface transition-colors"
+                        data-path="api-architecture" href="#">Endpoints</a></nav>
+                <div class="flex items-center gap-space-sm pl-space-sm"><button
+                        class="w-8 h-8 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors"
+                        title="Terminal Log"><span
+                            class="material-symbols-outlined text-[18px]">code</span></button><button
+                        class="w-8 h-8 rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors"
+                        title="Notifications"><span
+                            class="material-symbols-outlined text-[18px]">notifications</span></button>
+                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span
+                            class="material-symbols-outlined text-on-primary text-[18px]">person</span></div>
+                </div>
+            </div>
+        </header>
+        <main class="w-full pt-16 bg-surface px-space-lg min-h-screen">
+            <div class="flex flex-col w-full gap-space-lg pb-space-xl">
+                <!-- SECTION 1: Welcome Header & Key Metrics -->
+                <section class="flex flex-col gap-space-md">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm pb-space-xs">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-space-sm">
+                                <span class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Hola,
+                                    Guillermo</span>
+                                <span class="inline-flex items-center justify-center text-[1.5rem]">👋</span>
+                                <span
+                                    class="px-space-xs py-0.5 rounded bg-primary/10 text-primary font-label-xs text-label-xs uppercase tracking-widest font-bold">Node.js
+                                    Daemon Active</span>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-2">
+                                Balance Mensual &amp; Ecosistema Headless
+                                <span class="text-outline-variant">•</span>
+                                <span class="font-code-sm text-code-sm text-secondary">Telemetría en tiempo real:
+                                    Pipeline 4-Nodes OK</span>
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-space-sm">
+                            <div
+                                class="bg-surface-container-low px-space-md py-space-xs rounded-lg flex items-center gap-space-md shadow-sm">
+                                <div class="flex flex-col">
+                                    <span class="font-label-xs text-label-xs text-on-surface-variant uppercase">Ciclo
+                                        Actual</span>
+                                    <span class="font-code-sm text-code-sm text-on-surface font-semibold">Mayo
+                                        2025</span>
+                                </div>
+                                <div class="w-px h-6 bg-surface-container-high"></div>
+                                <div class="flex items-center gap-1.5 font-code-sm text-code-sm text-primary">
+                                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                                    Sync Activo
+                                </div>
+                            </div>
+                            <button
+                                class="bg-surface-container-high hover:bg-surface-container-highest text-on-surface px-space-md py-space-sm rounded-lg font-code-md text-code-md flex items-center gap-1.5 transition-all shadow-sm"
+                                id="refresh-telemetry-btn">
+                                <span class="material-symbols-outlined text-[16px] text-primary">sync</span>
+                                Forzar Ping
+                            </button>
+                        </div>
+                    </div>
+                    <!-- KPI Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md">
+                        <!-- KPI 1: Balance Disponible -->
+                        <div
+                            class="bg-surface-container-low/80 backdrop-blur-md rounded-xl p-space-md flex flex-col justify-between shadow-md relative overflow-hidden group hover:bg-surface-container-low transition-all">
+                            <div
+                                class="absolute -right-6 -top-6 w-28 h-28 bg-primary/10 rounded-full blur-2xl pointer-events-none group-hover:bg-primary/15 transition-all">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="font-label-xs text-label-xs uppercase text-on-surface-variant tracking-wider">Balance
+                                    Disponible</span>
+                                <span
+                                    class="px-space-xs py-0.5 rounded bg-primary/15 text-primary font-code-sm text-code-sm font-semibold">En
+                                    Meta</span>
+                            </div>
+                            <div class="my-space-sm">
+                                <div class="flex items-baseline gap-space-xs">
+                                    <span id="balance" class="font-code-lg text-code-lg text-primary font-bold">$184.50</span>
+                                    <span
+                                        class="font-label-xs text-label-xs text-on-surface-variant font-code-sm">USD</span>
+                                </div>
+                                <p
+                                    class="font-body-sm text-body-sm text-on-surface-variant mt-1 flex items-center gap-1">
+                                    <span class="text-primary font-semibold font-code-sm">↑ +12.4%</span> vs mes
+                                    anterior
+                                </p>
+                            </div>
+                            <div
+                                class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant border-t border-transparent pt-space-xs">
+                                <span>Capacidad residual</span>
+                                <span class="font-code-sm text-code-sm text-on-surface">36.9% Líquido</span>
+                            </div>
+                        </div>
+                        <!-- KPI 2: Gastos del Mes -->
+                        <div
+                            class="bg-surface-container-low/80 backdrop-blur-md rounded-xl p-space-md flex flex-col justify-between shadow-md relative overflow-hidden group hover:bg-surface-container-low transition-all">
+                            <div
+                                class="absolute -right-6 -top-6 w-28 h-28 bg-secondary/10 rounded-full blur-2xl pointer-events-none group-hover:bg-secondary/15 transition-all">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="font-label-xs text-label-xs uppercase text-on-surface-variant tracking-wider">Gastos
+                                    Acumulados</span>
+                                <span class="font-code-sm text-code-sm text-secondary font-bold">63.1% Límite</span>
+                            </div>
+                            <div class="my-space-sm">
+                                <div class="flex items-baseline gap-space-xs">
+                                    <span id="gastos" class="font-code-lg text-code-lg text-on-surface font-bold">$315.50</span>
+                                    <span class="font-code-sm text-code-sm text-on-surface-variant">/ $500.00</span>
+                                </div>
+                                <!-- Progress bar -->
+                                <div
+                                    class="w-full bg-surface-container-highest h-2 rounded-full mt-2.5 overflow-hidden">
+<div id="progress-bar" class="bg-gradient-to-r from-primary to-secondary h-full rounded-full transition-all duration-700"
+                                         style="width: 63.1%;"></div>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant pt-space-xs">
+                                <span>Presupuesto Restante</span>
+                                <span id="restante" class="font-code-sm text-code-sm text-primary font-bold">$184.50</span>
+                            </div>
+                        </div>
+                        <!-- KPI 3: Suscripciones Activas -->
+                        <div
+                            class="bg-surface-container-low/80 backdrop-blur-md rounded-xl p-space-md flex flex-col justify-between shadow-md relative overflow-hidden group hover:bg-surface-container-low transition-all">
+                            <div
+                                class="absolute -right-6 -top-6 w-28 h-28 bg-tertiary-container/10 rounded-full blur-2xl pointer-events-none group-hover:bg-tertiary-container/15 transition-all">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="font-label-xs text-label-xs uppercase text-on-surface-variant tracking-wider">Suscripciones
+                                    Fijas</span>
+                                <span
+                                    class="px-space-xs py-0.5 rounded bg-surface-container text-tertiary font-code-sm text-code-sm font-semibold">4
+                                    Activas</span>
+                            </div>
+                            <div class="my-space-sm">
+                                <div class="flex items-baseline gap-space-xs">
+                                    <span class="font-code-lg text-code-lg text-on-surface font-bold">$38.99</span>
+                                    <span class="font-label-xs text-label-xs text-on-surface-variant font-code-sm">/
+                                        mes</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 mt-2 flex-wrap">
+                                    <span
+                                        class="font-label-xs text-label-xs px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-code-sm">Spotify</span>
+                                    <span
+                                        class="font-label-xs text-label-xs px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-code-sm">Tidal</span>
+                                    <span
+                                        class="font-label-xs text-label-xs px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-code-sm">Copilot</span>
+                                    <span
+                                        class="font-label-xs text-label-xs px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-code-sm">Hetzner</span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant pt-space-xs">
+                                <span>Próximo cobro</span>
+                                <span class="font-code-sm text-code-sm text-secondary">Copilot en 4d</span>
+                            </div>
+                        </div>
+                        <!-- KPI 4: Fricción Cero Score -->
+                        <div
+                            class="bg-surface-container-low/80 backdrop-blur-md rounded-xl p-space-md flex flex-col justify-between shadow-md relative overflow-hidden group hover:bg-surface-container-low transition-all">
+                            <div
+                                class="absolute -right-6 -top-6 w-28 h-28 bg-primary/10 rounded-full blur-2xl pointer-events-none group-hover:bg-primary/15 transition-all">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="font-label-xs text-label-xs uppercase text-on-surface-variant tracking-wider">Fricción
+                                    Cero</span>
+                                <div class="flex items-center gap-1 font-code-sm text-code-sm text-primary font-bold">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+                                    1.8s AVG
+                                </div>
+                            </div>
+                            <div class="my-space-sm">
+                                <div class="flex items-baseline gap-space-xs">
+                                    <span class="font-code-lg text-code-lg text-primary font-bold">98.4%</span>
+                                    <span class="font-body-sm text-body-sm text-on-surface-variant">vía Bot</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                                    Solo 2 entradas manuales en Notion este trimestre.
+                                </p>
+                            </div>
+                            <div
+                                class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant pt-space-xs">
+                                <span>Parser Latency</span>
+                                <span class="font-code-sm text-code-sm text-primary font-semibold">24ms nominal</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- SECTION 2: Real-time Ingestion Pipeline Visualizer -->
+                <section
+                    class="bg-surface-container-low/60 backdrop-blur-lg rounded-xl p-space-md shadow-md flex flex-col gap-space-md">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-xs">
+                        <div class="flex items-center gap-space-sm">
+                            <span class="material-symbols-outlined text-primary text-[20px]">hub</span>
+                            <h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Arquitectura de
+                                Ingesta Headless en Vivo</h2>
+                        </div>
+                        <div class="flex items-center gap-space-sm font-code-sm text-code-sm text-on-surface-variant">
+                            <span class="inline-block w-2 h-2 rounded-full bg-primary"></span>
+                            <span>Flujo asíncrono sin interfaz pesada</span>
+                            <span
+                                class="px-space-xs py-0.5 rounded bg-surface-container-highest text-secondary font-mono">TG
+                                ➔ Express ➔ Notion</span>
+                        </div>
+                    </div>
+                    <!-- Pipeline Nodes Track -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md relative">
+                        <!-- Node 1: Telegram Webhook -->
+                        <div
+                            class="bg-surface-container p-space-md rounded-lg flex flex-col gap-space-xs relative overflow-hidden group hover:bg-surface-container-high transition-colors">
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="font-label-xs text-label-xs text-secondary font-code-sm uppercase tracking-wider">Nodo
+                                    01 // Gateway</span>
+                                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                            </div>
+                            <div class="flex items-center gap-space-xs my-0.5">
+                                <span class="material-symbols-outlined text-secondary text-[20px]">send</span>
+                                <span
+                                    class="font-code-md text-code-md text-on-surface font-semibold">@sigf_finance_bot</span>
+                            </div>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                Telegram Bot Polling/Webhook daemon. Intercepta entradas textuales cortas del usuario.
+                            </p>
+                            <div
+                                class="mt-space-xs pt-space-xs bg-surface-container-lowest/60 p-space-xs rounded flex items-center justify-between font-code-sm text-code-sm">
+                                <span class="text-on-surface-variant">RTT Ping:</span>
+                                <span class="text-primary font-bold">24ms OK</span>
+                            </div>
+                        </div>
+                        <!-- Node 2: Node.js Ingestion Engine -->
+                        <div
+                            class="bg-surface-container p-space-md rounded-lg flex flex-col gap-space-xs relative overflow-hidden group hover:bg-surface-container-high transition-colors">
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="font-label-xs text-label-xs text-primary font-code-sm uppercase tracking-wider">Nodo
+                                    02 // Core Parser</span>
+                                <span
+                                    class="px-1.5 py-0.5 rounded bg-primary/20 text-primary font-code-sm text-[0.625rem] font-bold">REGEX
+                                    OK</span>
+                            </div>
+                            <div class="flex items-center gap-space-xs my-0.5">
+                                <span class="material-symbols-outlined text-primary text-[20px]">terminal</span>
+                                <span class="font-code-md text-code-md text-on-surface font-semibold">Node.js Express
+                                    Server</span>
+                            </div>
+                            <div
+                                class="bg-surface-container-lowest p-space-xs rounded font-code-sm text-[0.7rem] text-on-surface-variant font-mono leading-tight">
+                                <span class="text-primary">&gt;</span> "Almuerzo 5.00"<br />
+                                <span class="text-secondary">↳</span> {amt: 5.0, cat: "comida"}
+                            </div>
+                            <div
+                                class="mt-auto pt-space-xs flex items-center justify-between font-code-sm text-code-sm">
+                                <span class="text-on-surface-variant">Memory Heap:</span>
+                                <span class="text-on-surface font-semibold">42.8 MB</span>
+                            </div>
+                        </div>
+                        <!-- Node 3: Notion DaaS -->
+                        <div
+                            class="bg-surface-container p-space-md rounded-lg flex flex-col gap-space-xs relative overflow-hidden group hover:bg-surface-container-high transition-colors">
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="font-label-xs text-label-xs text-tertiary font-code-sm uppercase tracking-wider">Nodo
+                                    03 // Persistencia</span>
+                                <span
+                                    class="px-1.5 py-0.5 rounded bg-tertiary/20 text-tertiary font-code-sm text-[0.625rem] font-bold">DaaS</span>
+                            </div>
+                            <div class="flex items-center gap-space-xs my-0.5">
+                                <span class="material-symbols-outlined text-tertiary text-[20px]">dataset</span>
+                                <span class="font-code-md text-code-md text-on-surface font-semibold">Notion Database
+                                    Engine</span>
+                            </div>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                4 Bases de Datos vinculadas bidireccionalmente por propiedades tipo Relation y Rollup.
+                            </p>
+                            <div
+                                class="mt-space-xs pt-space-xs bg-surface-container-lowest/60 p-space-xs rounded flex items-center justify-between font-code-sm text-code-sm">
+                                <span class="text-on-surface-variant">Tablas activas:</span>
+                                <span class="text-tertiary font-bold">4 Relaciones OK</span>
+                            </div>
+                        </div>
+                        <!-- Node 4: Cron Worker -->
+                        <div
+                            class="bg-surface-container p-space-md rounded-lg flex flex-col gap-space-xs relative overflow-hidden group hover:bg-surface-container-high transition-colors">
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="font-label-xs text-label-xs text-secondary-fixed-dim font-code-sm uppercase tracking-wider">Nodo
+                                    04 // Worker Cron</span>
+                                <span
+                                    class="material-symbols-outlined text-secondary-fixed-dim text-[16px]">schedule</span>
+                            </div>
+                            <div class="flex items-center gap-space-xs my-0.5">
+                                <span
+                                    class="material-symbols-outlined text-secondary-fixed-dim text-[20px]">event_repeat</span>
+                                <span class="font-code-md text-code-md text-on-surface font-semibold">node-cron
+                                    Scheduler</span>
+                            </div>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant">
+                                Alertas proactivas a las 08:00 AM vía Telegram con balance restante e inyección de
+                                cobros fijos.
+                            </p>
+                            <div
+                                class="mt-space-xs pt-space-xs bg-surface-container-lowest/60 p-space-xs rounded flex items-center justify-between font-code-sm text-code-sm">
+                                <span class="text-on-surface-variant">Próxima ejecución:</span>
+                                <span class="text-secondary font-bold">en 14h 22m</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- SECTION 3 & 4: Analytics (60%) & Telegram Simulator (40%) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+                    <!-- LEFT COLUMN: Analytics & Ledger (7 cols ~ 60%) -->
+                    <div class="lg:col-span-7 flex flex-col gap-space-lg">
+                        <!-- Categorías & Presupuestos Card -->
+                        <div
+                            class="bg-surface-container-low/80 backdrop-blur-md rounded-xl p-space-md shadow-md flex flex-col gap-space-md">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-headline-md text-headline-md text-on-surface tracking-tight">
+                                        Presupuesto por Categorías</h3>
+                                    <p class="font-body-sm text-body-sm text-on-surface-variant">Monitoreo dinámico con
+                                        alerta de saturación</p>
+                                </div>
+                                <span
+                                    class="font-code-sm text-code-sm text-on-surface-variant bg-surface-container px-space-sm py-1 rounded">DB1:
+                                    Categorías</span>
+                            </div>
+                            <div class="flex flex-col gap-space-md pt-space-xs">
+                                <!-- Item 1: Comida -->
+                                <div class="flex flex-col gap-1.5">
+                                    <div class="flex items-center justify-between font-code-sm text-code-sm">
+                                        <span class="text-on-surface font-semibold flex items-center gap-1.5">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+                                            Comida y Almuerzos
+                                        </span>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-error font-bold font-code-md text-code-md">$142.50</span>
+                                            <span class="text-on-surface-variant">/ $150.00</span>
+                                            <span
+                                                class="text-error font-bold text-xs bg-error-container/20 px-1 rounded">95.0%</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+                                        <div class="bg-error h-full rounded-full" style="width: 95%;"></div>
+                                    </div>
+                                </div>
+                                <!-- Item 2: Salidas -->
+                                <div class="flex flex-col gap-1.5">
+                                    <div class="flex items-center justify-between font-code-sm text-code-sm">
+                                        <span class="text-on-surface font-semibold flex items-center gap-1.5">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                                            Salidas y Social
+                                        </span>
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="text-secondary font-bold font-code-md text-code-md">$68.00</span>
+                                            <span class="text-on-surface-variant">/ $80.00</span>
+                                            <span
+                                                class="text-secondary font-bold text-xs bg-secondary/10 px-1 rounded">85.0%</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+                                        <div class="bg-secondary h-full rounded-full" style="width: 85%;"></div>
+                                    </div>
+                                </div>
+                                <!-- Item 3: Transporte -->
+                                <div class="flex flex-col gap-1.5">
+                                    <div class="flex items-center justify-between font-code-sm text-code-sm">
+                                        <span class="text-on-surface font-semibold flex items-center gap-1.5">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                                            Transporte &amp; Metro
+                                        </span>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-primary font-bold font-code-md text-code-md">$36.00</span>
+                                            <span class="text-on-surface-variant">/ $40.00</span>
+                                            <span
+                                                class="text-primary font-bold text-xs bg-primary/10 px-1 rounded">90.0%</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+                                        <div class="bg-primary h-full rounded-full" style="width: 90%;"></div>
+                                    </div>
+                                </div>
+                                <!-- Item 4: Software & Música -->
+                                <div class="flex flex-col gap-1.5">
+                                    <div class="flex items-center justify-between font-code-sm text-code-sm">
+                                        <span class="text-on-surface font-semibold flex items-center gap-1.5">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+                                            Software, Dev &amp; Música
+                                        </span>
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="text-tertiary font-bold font-code-md text-code-md">$38.99</span>
+                                            <span class="text-on-surface-variant">/ $45.00</span>
+                                            <span
+                                                class="text-tertiary font-bold text-xs bg-tertiary/10 px-1 rounded">86.6%</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+                                        <div class="bg-tertiary h-full rounded-full" style="width: 86.6%;"></div>
+                                    </div>
+                                </div>
+                                <!-- Item 5: Equipo / Hardware -->
+                                <div class="flex flex-col gap-1.5">
+                                    <div class="flex items-center justify-between font-code-sm text-code-sm">
+                                        <span class="text-on-surface font-semibold flex items-center gap-1.5">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                                            Hardware &amp; Libros SWE
+                                        </span>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-primary font-bold font-code-md text-code-md">$30.00</span>
+                                            <span class="text-on-surface-variant">/ $50.00</span>
+                                            <span
+                                                class="text-primary font-bold text-xs bg-primary/10 px-1 rounded">60.0%</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+                                        <div class="bg-primary h-full rounded-full" style="width: 60%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Historial de Transacciones Recientes (Notion DB 2) -->
+                        <div
+                            class="bg-surface-container-low/80 backdrop-blur-md rounded-xl p-space-md shadow-md flex flex-col gap-space-sm">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-space-sm">
+                                    <span class="material-symbols-outlined text-primary text-[20px]">receipt_long</span>
+                                    <h3 class="font-headline-md text-headline-md text-on-surface tracking-tight">
+                                        Transacciones Recientes</h3>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="font-code-sm text-code-sm text-on-surface-variant bg-surface-container px-space-sm py-1 rounded">DB2:
+                                        Transacciones</span>
+                                    <span class="font-label-xs text-label-xs text-primary font-bold">5 Registros</span>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left font-body-sm text-body-sm">
+                                    <thead>
+                                        <tr
+                                            class="font-code-sm text-code-sm text-on-surface-variant border-b border-surface-container-high uppercase tracking-wider">
+                                            <th class="py-2.5 px-3">Concepto</th>
+                                            <th class="py-2.5 px-3">Categoría</th>
+                                            <th class="py-2.5 px-3">Origen</th>
+                                            <th class="py-2.5 px-3 text-right">Monto</th>
+                                            <th class="py-2.5 px-3 text-right">Notion Sync</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-surface-container-high/40"
+                                        id="transactions-table-body">
+                                        <!-- Row 1 -->
+                                        <tr class="hover:bg-surface-container-high/50 transition-colors">
+                                            <td class="py-3 px-3">
+                                                <div class="font-body-md text-body-md text-on-surface font-semibold">
+                                                    Café de Especialidad</div>
+                                                <div class="font-code-sm text-code-sm text-on-surface-variant">hace 12
+                                                    min</div>
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                <span
+                                                    class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-code-sm text-xs">Comida</span>
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                <div
+                                                    class="flex items-center gap-1.5 text-secondary font-code-sm text-code-sm">
+                                                    <span class="material-symbols-outlined text-[15px]">send</span>
+                                                    TG Bot
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="py-3 px-3 text-right font-code-md text-code-md font-bold text-on-surface">
+                                                -$2.50</td>
+                                            <td class="py-3 px-3 text-right">
+                                                <span
+                                                    class="inline-flex items-center gap-1 font-label-xs text-label-xs text-primary bg-primary/10 px-2 py-0.5 rounded font-bold">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                                    SYNCED
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <!-- Row 2 -->
+                                        <tr class="hover:bg-surface-container-high/50 transition-colors">
+                                            <td class="py-3 px-3">
+                                                <div class="font-body-md text-body-md text-on-surface font-semibold">
+                                                    Spotify Premium</div>
+                                                <div class="font-code-sm text-code-sm text-on-surface-variant">ayer,
+                                                    08:00 AM</div>
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                <span
+                                                    class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-code-sm text-xs">Suscripciones</span>
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                <div
+                                                    class="flex items-center gap-1.5 text-tertiary font-code-sm text-code-sm">
+                                                    <span class="material-symbols-outlined text-[15px]">schedule</span>
+                                                    Cron Job
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="py-3 px-3 text-right font-code-md text-code-md font-bold text-on-surface">
+                                                -$5.99</td>
+                                            <td class="py-3 px-3 text-right">
+                                                <span
+                                                    class="inline-flex items-center gap-1 font-label-xs text-label-xs text-primary bg-primary/10 px-2 py-0.5 rounded font-bold">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                                    SYNCED
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <!-- Row 3 -->
+                                        <tr class="hover:bg-surface-container-high/50 transition-colors">
+                                            <td class="py-3 px-3">
+                                                <div class="font-body-md text-body-md text-on-surface font-semibold">
+                                                    Pasaje Metro / Bus</div>
+                                                <div class="font-code-sm text-code-sm text-on-surface-variant">hace 1
+                                                    día</div>
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                <span
+                                                    class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-code-sm text-xs">Transporte</span>
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                <div
+                                                    class="flex items-center gap-1.5 text-secondary font-code-sm text-code-sm">
+                                                    <span class="material-symbols-outlined text-[15px]">send</span>
+                                                    TG Bot
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="py-3 px-3 text-right font-code-md text-code-md font-bold text-on-surface">
+                                                -$1.80</td>
+                                            <td class="py-3 px-3 text-right">
+                                                <span
+                                                    class="inline-flex items-center gap-1 font-label-xs text-label-xs text-primary bg-primary/10 px-2 py-0.5 rounded font-bold">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                                    SYNCED
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <!-- Row 4 -->
+                                        <tr class="hover:bg-surface-container-high/50 transition-colors">
+                                            <td class="py-3 px-3">
+                                                <div class="font-body-md text-body-md text-on-surface font-semibold">
+                                                    Tidal HiFi Master</div>
+                                                <div class="font-code-sm text-code-sm text-on-surface-variant">hace 3
+                                                    días</div>
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                <span
+                                                    class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-code-sm text-xs">Suscripciones</span>
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                <div
+                                                    class="flex items-center gap-1.5 text-tertiary font-code-sm text-code-sm">
+                                                    <span class="material-symbols-outlined text-[15px]">autorenew</span>
+                                                    Automático
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="py-3 px-3 text-right font-code-md text-code-md font-bold text-on-surface">
+                                                -$10.99</td>
+                                            <td class="py-3 px-3 text-right">
+                                                <span
+                                                    class="inline-flex items-center gap-1 font-label-xs text-label-xs text-primary bg-primary/10 px-2 py-0.5 rounded font-bold">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                                    SYNCED
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <!-- Row 5 -->
+                                        <tr class="hover:bg-surface-container-high/50 transition-colors">
+                                            <td class="py-3 px-3">
+                                                <div class="font-body-md text-body-md text-on-surface font-semibold">
+                                                    Libro Arquitectura Software</div>
+                                                <div class="font-code-sm text-code-sm text-on-surface-variant">hace 4
+                                                    días</div>
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                <span
+                                                    class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-code-sm text-xs">Equipo/SWE</span>
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                <div
+                                                    class="flex items-center gap-1.5 text-secondary font-code-sm text-code-sm">
+                                                    <span class="material-symbols-outlined text-[15px]">send</span>
+                                                    TG Bot
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="py-3 px-3 text-right font-code-md text-code-md font-bold text-on-surface">
+                                                -$22.00</td>
+                                            <td class="py-3 px-3 text-right">
+                                                <span
+                                                    class="inline-flex items-center gap-1 font-label-xs text-label-xs text-primary bg-primary/10 px-2 py-0.5 rounded font-bold">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                                    SYNCED
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- RIGHT COLUMN: Interactive Telegram Live Feed & Simulation Panel (5 cols ~ 40%) -->
+                    <div class="lg:col-span-5 flex flex-col gap-space-md">
+                        <!-- Telegram Client Shell -->
+                        <div class="bg-surface-container-low rounded-xl shadow-xl flex flex-col overflow-hidden">
+                            <!-- TG Chat Header -->
+                            <div class="bg-surface-container-high p-space-md flex items-center justify-between">
+                                <div class="flex items-center gap-space-sm">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary relative">
+                                        <span class="material-symbols-outlined text-[20px]">smart_toy</span>
+                                        <span
+                                            class="w-2.5 h-2.5 rounded-full bg-primary absolute bottom-0 right-0 border-2 border-surface-container-high"></span>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span
+                                            class="font-headline-md text-headline-md leading-tight text-on-surface font-bold">SIGF
+                                            Bot</span>
+                                        <span class="font-label-xs text-label-xs text-secondary font-mono">v1.2
+                                            Ingestion Engine • Online</span>
+                                    </div>
+                                </div>
+                                <span
+                                    class="font-code-sm text-code-sm text-on-surface-variant bg-surface-container-lowest px-2 py-0.5 rounded">FastHook
+                                    180ms</span>
+                            </div>
+                            <!-- TG Chat Feed -->
+                            <div class="p-space-md flex flex-col gap-space-sm max-h-[420px] overflow-y-auto bg-surface-container-lowest/70 font-body-sm text-body-sm"
+                                id="telegram-chat-feed">
+                                <!-- Timestamp banner -->
+                                <div class="flex justify-center">
+                                    <span
+                                        class="font-label-xs text-label-xs text-on-surface-variant bg-surface-container-high/60 px-space-sm py-0.5 rounded font-mono">HOY
+                                        01:14 PM</span>
+                                </div>
+                                <!-- Message Guillermo -->
+                                <div class="flex flex-col items-end">
+                                    <div
+                                        class="bg-primary/20 text-on-surface rounded-xl rounded-tr-none px-space-md py-space-xs max-w-[85%] shadow-sm">
+                                        <p class="font-code-md text-code-md text-on-surface">Almuerzo 4.50</p>
+                                        <div
+                                            class="flex items-center justify-end gap-1 mt-0.5 font-label-xs text-[0.625rem] text-primary/80">
+                                            <span>01:14 PM</span>
+                                            <span class="material-symbols-outlined text-[12px]">done_all</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Bot Reply -->
+                                <div class="flex flex-col items-start">
+                                    <div
+                                        class="bg-surface-container-high text-on-surface rounded-xl rounded-tl-none p-space-sm max-w-[90%] shadow-sm flex flex-col gap-1">
+                                        <p class="font-body-sm text-body-sm leading-snug">
+                                            <span class="text-primary font-bold">✅ $4.50</span> registrado en <span
+                                                class="font-semibold text-secondary">Comida</span>.
+                                        </p>
+                                        <div
+                                            class="bg-surface-container-lowest p-space-xs rounded font-code-sm text-code-sm text-on-surface-variant mt-1">
+                                            📊 Restante en cat: <span class="text-on-surface font-bold">$47.50</span> /
+                                            $150.00
+                                        </div>
+                                        <span
+                                            class="font-label-xs text-[0.625rem] text-on-surface-variant self-end mt-0.5">01:14
+                                            PM • 142ms</span>
+                                    </div>
+                                </div>
+                                <!-- Message Guillermo -->
+                                <div class="flex flex-col items-end">
+                                    <div
+                                        class="bg-primary/20 text-on-surface rounded-xl rounded-tr-none px-space-md py-space-xs max-w-[85%] shadow-sm">
+                                        <p class="font-code-md text-code-md text-on-surface">Café 2.50</p>
+                                        <div
+                                            class="flex items-center justify-end gap-1 mt-0.5 font-label-xs text-[0.625rem] text-primary/80">
+                                            <span>01:32 PM</span>
+                                            <span class="material-symbols-outlined text-[12px]">done_all</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Bot Reply -->
+                                <div class="flex flex-col items-start">
+                                    <div
+                                        class="bg-surface-container-high text-on-surface rounded-xl rounded-tl-none p-space-sm max-w-[90%] shadow-sm flex flex-col gap-1">
+                                        <p class="font-body-sm text-body-sm leading-snug">
+                                            <span class="text-primary font-bold">✅ $2.50</span> registrado en <span
+                                                class="font-semibold text-secondary">Comida</span>.
+                                        </p>
+                                        <div
+                                            class="bg-surface-container-lowest p-space-xs rounded font-code-sm text-code-sm text-error mt-1 flex items-center gap-1">
+                                            <span>⚠️ Te queda <b>$45.00</b> en Comida este mes.</span>
+                                        </div>
+                                        <span
+                                            class="font-label-xs text-[0.625rem] text-on-surface-variant self-end mt-0.5">01:32
+                                            PM • 164ms</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Simulation Input Form -->
+                            <div class="p-space-md bg-surface-container flex flex-col gap-space-sm">
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="font-label-xs text-label-xs text-on-surface-variant uppercase font-code-sm">Simulador
+                                        de Ingesta Headless</span>
+                                    <div class="flex gap-1.5">
+                                        <button
+                                            class="quick-sample-btn px-2 py-0.5 rounded bg-surface-container-high hover:bg-surface-container-highest text-secondary font-code-sm text-xs transition-colors"
+                                            data-cmd="Tacos 6.00" type="button">"Tacos 6.00"</button>
+                                        <button
+                                            class="quick-sample-btn px-2 py-0.5 rounded bg-surface-container-high hover:bg-surface-container-highest text-secondary font-code-sm text-xs transition-colors"
+                                            data-cmd="Uber 3.20" type="button">"Uber 3.20"</button>
+                                        <button
+                                            class="quick-sample-btn px-2 py-0.5 rounded bg-surface-container-high hover:bg-surface-container-highest text-secondary font-code-sm text-xs transition-colors"
+                                            data-cmd="Notion Pro 8.00" type="button">"Notion Pro 8.00"</button>
+                                    </div>
+                                </div>
+                                <form class="flex gap-space-xs items-center" id="telegram-sim-form">
+                                    <div class="relative flex-1">
+                                        <input autocomplete="off"
+                                            class="w-full bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant font-code-md text-code-md px-space-md py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary shadow-inner"
+                                            id="telegram-input-text"
+                                            placeholder="Escribe: [Concepto] [Monto] ej. 'Almuerzo 5.50'" required=""
+                                            type="text" />
+                                    </div>
+                                    <button
+                                        class="bg-primary hover:bg-primary-container text-on-primary font-bold px-space-md py-2.5 rounded-lg font-code-md text-code-md flex items-center justify-center gap-1 transition-all shadow-sm"
+                                        type="submit">
+                                        <span class="material-symbols-outlined text-[18px]">send</span>
+                                        <span class="hidden sm:inline">Enviar</span>
+                                    </button>
+                                </form>
+                                <p class="font-label-xs text-label-xs text-on-surface-variant">
+                                    ⚡ La sintaxis regex parser de Node.js analiza automáticamente el concepto y
+                                    clasifica la categoría en Notion.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Live Execution Log Terminal -->
+                        <div
+                            class="bg-surface-container-lowest rounded-xl p-space-md shadow-md flex flex-col gap-space-xs font-mono">
+                            <div class="flex items-center justify-between pb-space-xs">
+                                <span
+                                    class="font-label-xs text-label-xs text-primary uppercase font-bold flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                                    Node.js Runtime Ingestion Log
+                                </span>
+                                <span class="font-code-sm text-code-sm text-on-surface-variant">port 4000 •
+                                    listening</span>
+                            </div>
+                            <div class="font-code-sm text-[0.7rem] text-on-surface-variant space-y-1 overflow-x-auto max-h-36 overflow-y-auto"
+                                id="terminal-stdout">
+                                <div><span class="text-outline">[08:00:01]</span> <span
+                                        class="text-tertiary">CRON:</span> Daily summary alert triggered -&gt; 200 OK
+                                    via TG</div>
+                                <div><span class="text-outline">[13:14:22]</span> <span
+                                        class="text-secondary">HOOK:</span> POST /webhook/telegram - payload parsed in
+                                    3.1ms</div>
+                                <div><span class="text-outline">[13:14:23]</span> <span
+                                        class="text-primary">NOTION:</span> Row appended to DB2_TRANSACTIONS (id:
+                                    nt_993f)</div>
+                                <div><span class="text-outline">[13:32:04]</span> <span
+                                        class="text-secondary">HOOK:</span> POST /webhook/telegram - 'Café 2.50' matches
+                                    'comida'</div>
+                                <div><span class="text-outline">[13:32:05]</span> <span
+                                        class="text-primary">NOTION:</span> Rollup updated in DB4_CONTROL_MENSUAL</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- SECTION 5: Notion Data Model Inspector (4 Bases de Datos Preview) -->
+                <section
+                    class="bg-surface-container-low/80 backdrop-blur-md rounded-xl p-space-md shadow-md flex flex-col gap-space-md">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-xs">
+                        <div class="flex items-center gap-space-sm">
+                            <div
+                                class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center text-primary font-bold">
+                                <span class="material-symbols-outlined text-[20px]">database</span>
+                            </div>
+                            <div>
+                                <h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Notion
+                                    Data-as-a-Service Schema (DaaS)</h2>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">Estructura relacional de 4
+                                    bases de datos enlazadas en Notion</p>
+                            </div>
+                        </div>
+                        <!-- Database selector tabs -->
+                        <div class="flex items-center gap-1 bg-surface-container-lowest p-1 rounded-lg">
+                            <button
+                                class="notion-tab-btn px-space-sm py-1 rounded text-primary font-code-sm text-code-sm font-semibold bg-surface-container-high"
+                                data-target="db-cat">DB 1: Categorías</button>
+                            <button
+                                class="notion-tab-btn px-space-sm py-1 rounded text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors"
+                                data-target="db-trx">DB 2: Transacciones</button>
+                            <button
+                                class="notion-tab-btn px-space-sm py-1 rounded text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors"
+                                data-target="db-sub">DB 3: Suscripciones</button>
+                            <button
+                                class="notion-tab-btn px-space-sm py-1 rounded text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors"
+                                data-target="db-ctl">DB 4: Control Mensual</button>
+                        </div>
+                    </div>
+                    <!-- DB Tab 1: DB1 Categorías -->
+                    <div class="notion-tab-content flex flex-col gap-space-sm" id="db-cat">
+                        <div
+                            class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant px-space-xs">
+                            <span class="font-mono text-secondary">database_id: 3c914bf4-db1-cat</span>
+                            <span>Properties: Title, Select, Number, Relation (DB2)</span>
+                        </div>
+                        <div class="overflow-x-auto rounded-lg bg-surface-container-lowest">
+                            <table class="w-full text-left font-body-sm text-body-sm">
+                                <thead>
+                                    <tr
+                                        class="font-code-sm text-code-sm text-on-surface-variant border-b border-surface-container-high uppercase">
+                                        <th class="py-2.5 px-4 font-mono">Nombre [Title]</th>
+                                        <th class="py-2.5 px-4 font-mono">Tipo [Select]</th>
+                                        <th class="py-2.5 px-4 font-mono">Presupuesto [Number]</th>
+                                        <th class="py-2.5 px-4 font-mono">Rollup Gastado [Formula]</th>
+                                        <th class="py-2.5 px-4 font-mono text-right">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-surface-container-high/30 font-code-sm text-code-sm">
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">🍔 Comida y Almuerzos</td>
+                                        <td class="py-2.5 px-4"><span
+                                                class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">Variable</span>
+                                        </td>
+                                        <td class="py-2.5 px-4 text-on-surface">$150.00</td>
+                                        <td class="py-2.5 px-4 text-error font-bold">$142.50</td>
+                                        <td class="py-2.5 px-4 text-right"><span
+                                                class="text-error font-bold">95.0%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">🎉 Salidas y Social</td>
+                                        <td class="py-2.5 px-4"><span
+                                                class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">Variable</span>
+                                        </td>
+                                        <td class="py-2.5 px-4 text-on-surface">$80.00</td>
+                                        <td class="py-2.5 px-4 text-secondary font-bold">$68.00</td>
+                                        <td class="py-2.5 px-4 text-right"><span
+                                                class="text-secondary font-bold">85.0%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">🚇 Transporte / Metro</td>
+                                        <td class="py-2.5 px-4"><span
+                                                class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">Fijo/Variable</span>
+                                        </td>
+                                        <td class="py-2.5 px-4 text-on-surface">$40.00</td>
+                                        <td class="py-2.5 px-4 text-primary font-bold">$36.00</td>
+                                        <td class="py-2.5 px-4 text-right"><span
+                                                class="text-primary font-bold">90.0%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">💻 Software &amp; VPS</td>
+                                        <td class="py-2.5 px-4"><span
+                                                class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">Recurrente</span>
+                                        </td>
+                                        <td class="py-2.5 px-4 text-on-surface">$45.00</td>
+                                        <td class="py-2.5 px-4 text-tertiary font-bold">$38.99</td>
+                                        <td class="py-2.5 px-4 text-right"><span
+                                                class="text-tertiary font-bold">86.6%</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- DB Tab 2: DB2 Transacciones (Hidden by default) -->
+                    <div class="notion-tab-content hidden flex flex-col gap-space-sm" id="db-trx">
+                        <div
+                            class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant px-space-xs">
+                            <span class="font-mono text-secondary">database_id: 8820f1ab-db2-trx</span>
+                            <span>Properties: Concepto, Monto, Fecha, Categoría (Relation), Origen</span>
+                        </div>
+                        <div class="overflow-x-auto rounded-lg bg-surface-container-lowest">
+                            <table class="w-full text-left font-body-sm text-body-sm">
+                                <thead>
+                                    <tr
+                                        class="font-code-sm text-code-sm text-on-surface-variant border-b border-surface-container-high uppercase">
+                                        <th class="py-2.5 px-4 font-mono">Concepto [Title]</th>
+                                        <th class="py-2.5 px-4 font-mono">Monto [Number]</th>
+                                        <th class="py-2.5 px-4 font-mono">Fecha [Date]</th>
+                                        <th class="py-2.5 px-4 font-mono">Categoría [Relation]</th>
+                                        <th class="py-2.5 px-4 font-mono text-right">Canal</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-surface-container-high/30 font-code-sm text-code-sm">
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">Café de Especialidad</td>
+                                        <td class="py-2.5 px-4 text-primary font-bold">$2.50</td>
+                                        <td class="py-2.5 px-4 text-on-surface-variant">2025-05-18 13:32</td>
+                                        <td class="py-2.5 px-4 text-secondary">Comida y Almuerzos</td>
+                                        <td class="py-2.5 px-4 text-right"><span
+                                                class="text-xs text-primary font-mono font-bold">TG_BOT</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">Almuerzo Universitario
+                                        </td>
+                                        <td class="py-2.5 px-4 text-primary font-bold">$4.50</td>
+                                        <td class="py-2.5 px-4 text-on-surface-variant">2025-05-18 13:14</td>
+                                        <td class="py-2.5 px-4 text-secondary">Comida y Almuerzos</td>
+                                        <td class="py-2.5 px-4 text-right"><span
+                                                class="text-xs text-primary font-mono font-bold">TG_BOT</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">Spotify Premium</td>
+                                        <td class="py-2.5 px-4 text-primary font-bold">$5.99</td>
+                                        <td class="py-2.5 px-4 text-on-surface-variant">2025-05-17 08:00</td>
+                                        <td class="py-2.5 px-4 text-secondary">Software &amp; VPS</td>
+                                        <td class="py-2.5 px-4 text-right"><span
+                                                class="text-xs text-tertiary font-mono font-bold">CRON_JOB</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- DB Tab 3: DB3 Suscripciones (Hidden by default) -->
+                    <div class="notion-tab-content hidden flex flex-col gap-space-sm" id="db-sub">
+                        <div
+                            class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant px-space-xs">
+                            <span class="font-mono text-secondary">database_id: 110ab4e2-db3-sub</span>
+                            <span>Properties: Servicio, Costo USD, Día Cobro, Activo (Checkbox)</span>
+                        </div>
+                        <div class="overflow-x-auto rounded-lg bg-surface-container-lowest">
+                            <table class="w-full text-left font-body-sm text-body-sm">
+                                <thead>
+                                    <tr
+                                        class="font-code-sm text-code-sm text-on-surface-variant border-b border-surface-container-high uppercase">
+                                        <th class="py-2.5 px-4 font-mono">Servicio [Title]</th>
+                                        <th class="py-2.5 px-4 font-mono">Costo [Number]</th>
+                                        <th class="py-2.5 px-4 font-mono">Día de Cobro</th>
+                                        <th class="py-2.5 px-4 font-mono">Categoría Relation</th>
+                                        <th class="py-2.5 px-4 font-mono text-right">Activo</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-surface-container-high/30 font-code-sm text-code-sm">
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">Spotify Estudiante</td>
+                                        <td class="py-2.5 px-4 font-bold text-on-surface">$5.99</td>
+                                        <td class="py-2.5 px-4 text-on-surface-variant">Día 17 de cada mes</td>
+                                        <td class="py-2.5 px-4 text-secondary">Software, Dev &amp; Música</td>
+                                        <td class="py-2.5 px-4 text-right text-primary font-bold">✔ ACTIVO</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">Tidal HiFi Master</td>
+                                        <td class="py-2.5 px-4 font-bold text-on-surface">$10.99</td>
+                                        <td class="py-2.5 px-4 text-on-surface-variant">Día 15 de cada mes</td>
+                                        <td class="py-2.5 px-4 text-secondary">Software, Dev &amp; Música</td>
+                                        <td class="py-2.5 px-4 text-right text-primary font-bold">✔ ACTIVO</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">GitHub Copilot Individual
+                                        </td>
+                                        <td class="py-2.5 px-4 font-bold text-on-surface">$10.00</td>
+                                        <td class="py-2.5 px-4 text-on-surface-variant">Día 22 de cada mes</td>
+                                        <td class="py-2.5 px-4 text-secondary">Software, Dev &amp; Música</td>
+                                        <td class="py-2.5 px-4 text-right text-primary font-bold">✔ ACTIVO</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">VPS Hetzner Cloud (Node +
+                                            TG)</td>
+                                        <td class="py-2.5 px-4 font-bold text-on-surface">$12.01</td>
+                                        <td class="py-2.5 px-4 text-on-surface-variant">Día 01 de cada mes</td>
+                                        <td class="py-2.5 px-4 text-secondary">Software, Dev &amp; Música</td>
+                                        <td class="py-2.5 px-4 text-right text-primary font-bold">✔ ACTIVO</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- DB Tab 4: DB4 Control Mensual (Hidden by default) -->
+                    <div class="notion-tab-content hidden flex flex-col gap-space-sm" id="db-ctl">
+                        <div
+                            class="flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant px-space-xs">
+                            <span class="font-mono text-secondary">database_id: 900fa27d-db4-ctl</span>
+                            <span>Properties: Mes, Rollup Ingresos, Rollup Gastos, Saldo Neto, Status</span>
+                        </div>
+                        <div class="overflow-x-auto rounded-lg bg-surface-container-lowest">
+                            <table class="w-full text-left font-body-sm text-body-sm">
+                                <thead>
+                                    <tr
+                                        class="font-code-sm text-code-sm text-on-surface-variant border-b border-surface-container-high uppercase">
+                                        <th class="py-2.5 px-4 font-mono">Periodo [Title]</th>
+                                        <th class="py-2.5 px-4 font-mono">Ingresos [Rollup]</th>
+                                        <th class="py-2.5 px-4 font-mono">Gastos [Rollup]</th>
+                                        <th class="py-2.5 px-4 font-mono">Saldo Neto [Formula]</th>
+                                        <th class="py-2.5 px-4 font-mono text-right">Cumplimiento</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-surface-container-high/30 font-code-sm text-code-sm">
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-primary">Mayo 2025 (En Curso)</td>
+                                        <td class="py-2.5 px-4 text-primary font-bold">$500.00</td>
+                                        <td class="py-2.5 px-4 text-secondary font-bold">$315.50</td>
+                                        <td class="py-2.5 px-4 text-primary font-bold">+$184.50</td>
+                                        <td class="py-2.5 px-4 text-right"><span
+                                                class="px-2 py-0.5 rounded bg-primary/20 text-primary text-xs font-bold">En
+                                                Meta (+12%)</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">Abril 2025</td>
+                                        <td class="py-2.5 px-4 text-on-surface font-bold">$500.00</td>
+                                        <td class="py-2.5 px-4 text-on-surface-variant font-bold">$465.20</td>
+                                        <td class="py-2.5 px-4 text-on-surface font-bold">+$34.80</td>
+                                        <td class="py-2.5 px-4 text-right"><span
+                                                class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant text-xs">Cerrado
+                                                OK</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 px-4 font-semibold text-on-surface">Marzo 2025</td>
+                                        <td class="py-2.5 px-4 text-on-surface font-bold">$480.00</td>
+                                        <td class="py-2.5 px-4 text-on-surface-variant font-bold">$440.00</td>
+                                        <td class="py-2.5 px-4 text-on-surface font-bold">+$40.00</td>
+                                        <td class="py-2.5 px-4 text-right"><span
+                                                class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant text-xs">Cerrado
+                                                OK</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <script>
+                    (function initDashboardInteractions() {
+                        // 1. Notion DB Tab Switching Logic
+                        const tabButtons = document.querySelectorAll('.notion-tab-btn');
+                        const tabContents = document.querySelectorAll('.notion-tab-content');
+
+                        tabButtons.forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                const targetId = btn.getAttribute('data-target');
+
+                                tabButtons.forEach(b => {
+                                    b.classList.remove('bg-surface-container-high', 'text-primary', 'font-semibold');
+                                    b.classList.add('text-on-surface-variant');
+                                });
+                                btn.classList.add('bg-surface-container-high', 'text-primary', 'font-semibold');
+                                btn.classList.remove('text-on-surface-variant');
+
+                                tabContents.forEach(content => {
+                                    if (content.id === targetId) {
+                                        content.classList.remove('hidden');
+                                    } else {
+                                        content.classList.add('hidden');
+                                    }
+                                });
+                            });
+                        });
+
+                        // 2. Telegram Simulator Engine
+                        const simForm = document.getElementById('telegram-sim-form');
+                        const simInput = document.getElementById('telegram-input-text');
+                        const chatFeed = document.getElementById('telegram-chat-feed');
+                        const terminalStdout = document.getElementById('terminal-stdout');
+                        const trxTableBody = document.getElementById('transactions-table-body');
+                        const quickSampleBtns = document.querySelectorAll('.quick-sample-btn');
+
+                        quickSampleBtns.forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                simInput.value = btn.getAttribute('data-cmd');
+                                simInput.focus();
+                            });
+                        });
+
+                        function getNowTime() {
+                            const d = new Date();
+                            return d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+                        }
+
+                        function parseExpense(text) {
+                            const trimmed = text.trim();
+                            // Match pattern like "[Concept] [Amount]" or "[Amount] [Concept]"
+                            const regex = /^(.*?)\s+(\d+(\.\d{1,2})?)$/;
+                            const match = trimmed.match(regex);
+                            if (match) {
+                                return {
+                                    concept: match[1],
+                                    amount: parseFloat(match[2])
+                                };
+                            }
+                            return null;
+                        }
+
+                        function mapCategory(concept) {
+                            const lower = concept.toLowerCase();
+                            if (lower.includes('almuerzo') || lower.includes('tacos') || lower.includes('café') || lower.includes('cafe') || lower.includes('comida') || lower.includes('burger')) {
+                                return {name: 'Comida', limit: 150.00, budgetLeft: 42.50};
+                            }
+                            if (lower.includes('uber') || lower.includes('metro') || lower.includes('bus') || lower.includes('gasolina')) {
+                                return {name: 'Transporte', limit: 40.00, budgetLeft: 3.20};
+                            }
+                            if (lower.includes('notion') || lower.includes('vps') || lower.includes('libro') || lower.includes('curso') || lower.includes('copilot')) {
+                                return {name: 'Software / SWE', limit: 50.00, budgetLeft: 20.00};
+                            }
+                            return {name: 'Salidas y Social', limit: 80.00, budgetLeft: 12.00};
+                        }
+
+                        if (simForm) {
+                            simForm.addEventListener('submit', (e) => {
+                                e.preventDefault();
+                                const rawText = simInput.value;
+                                if (!rawText) return;
+
+                                const timeStr = getNowTime();
+                                const parsed = parseExpense(rawText);
+
+                                // Append User Message
+                                const userMsg = document.createElement('div');
+                                userMsg.className = 'flex flex-col items-end';
+                                userMsg.innerHTML = `
+          <div class="bg-primary/20 text-on-surface rounded-xl rounded-tr-none px-space-md py-space-xs max-w-[85%] shadow-sm">
+            <p class="font-code-md text-code-md text-on-surface">${escapeHtml(rawText)}</p>
+            <div class="flex items-center justify-end gap-1 mt-0.5 font-label-xs text-[0.625rem] text-primary/80">
+              <span>${timeStr}</span>
+              <span class="material-symbols-outlined text-[12px]">done_all</span>
+            </div>
+          </div>
+        `;
+                                chatFeed.appendChild(userMsg);
+                                chatFeed.scrollTop = chatFeed.scrollHeight;
+                                simInput.value = '';
+
+                                // Terminal Log line
+                                const logLine = document.createElement('div');
+                                logLine.innerHTML = `<span class="text-outline">[${timeStr}]</span> <span class="text-secondary">HOOK:</span> Ingesting message "${escapeHtml(rawText)}" via Webhook RTT 28ms`;
+                                terminalStdout.prepend(logLine);
+
+                                // Bot Response Simulation (160ms simulated delay)
+                                setTimeout(() => {
+                                    const catInfo = parsed ? mapCategory(parsed.concept) : {name: 'Varios', limit: 50, budgetLeft: 20};
+                                    const formattedAmt = parsed ? parsed.amount.toFixed(2) : "0.00";
+                                    const newBudget = (catInfo.budgetLeft - (parsed ? parsed.amount : 0)).toFixed(2);
+
+                                    const botMsg = document.createElement('div');
+                                    botMsg.className = 'flex flex-col items-start';
+                                    botMsg.innerHTML = `
+            <div class="bg-surface-container-high text-on-surface rounded-xl rounded-tl-none p-space-sm max-w-[90%] shadow-sm flex flex-col gap-1">
+              <p class="font-body-sm text-body-sm leading-snug">
+                <span class="text-primary font-bold">✅ $${formattedAmt}</span> registrado en <span class="font-semibold text-secondary">${catInfo.name}</span>.
+              </p>
+              <div class="bg-surface-container-lowest p-space-xs rounded font-code-sm text-code-sm ${parseFloat(newBudget) < 10 ? 'text-error' : 'text-on-surface-variant'} mt-1">
+                📊 Restante en cat: <span class="font-bold">$${newBudget}</span> / $${catInfo.limit.toFixed(2)}
+              </div>
+              <span class="font-label-xs text-[0.625rem] text-on-surface-variant self-end mt-0.5">${timeStr} • 148ms</span>
+            </div>
+          `;
+                                    chatFeed.appendChild(botMsg);
+                                    chatFeed.scrollTop = chatFeed.scrollHeight;
+
+                                    // Add to Live Ledger Table
+                                    if (parsed && trxTableBody) {
+                                        const tr = document.createElement('tr');
+                                        tr.className = 'hover:bg-surface-container-high/50 transition-colors animate-pulse';
+                                        tr.innerHTML = `
+              <td class="py-3 px-3">
+                <div class="font-body-md text-body-md text-on-surface font-semibold">${escapeHtml(parsed.concept)}</div>
+                <div class="font-code-sm text-code-sm text-primary">justo ahora</div>
+              </td>
+              <td class="py-3 px-3">
+                <span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-code-sm text-xs">${catInfo.name}</span>
+              </td>
+              <td class="py-3 px-3">
+                <div class="flex items-center gap-1.5 text-secondary font-code-sm text-code-sm">
+                  <span class="material-symbols-outlined text-[15px]">send</span>
+                  TG Bot
+                </div>
+              </td>
+              <td class="py-3 px-3 text-right font-code-md text-code-md font-bold text-on-surface">-$${formattedAmt}</td>
+              <td class="py-3 px-3 text-right">
+                <span class="inline-flex items-center gap-1 font-label-xs text-label-xs text-primary bg-primary/10 px-2 py-0.5 rounded font-bold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  SYNCED
+                </span>
+              </td>
+            `;
+                                        trxTableBody.prepend(tr);
+                                        setTimeout(() => tr.classList.remove('animate-pulse'), 1200);
+
+                                        // Log Notion write confirmation
+                                        const notionLog = document.createElement('div');
+                                        notionLog.innerHTML = `<span class="text-outline">[${timeStr}]</span> <span class="text-primary">NOTION:</span> Row created: DB2_TRX ("${escapeHtml(parsed.concept)}" -> -$${formattedAmt}) 201 Created`;
+                                        terminalStdout.prepend(notionLog);
+                                    }
+                                }, 180);
+                            });
+                        }
+
+                        function escapeHtml(text) {
+                            const map = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'};
+                            return text.replace(/[&<>"']/g, function (m) {return map[m];});
+                        }
+
+                        // 3. Forzar Ping Button micro-interaction
+                        const pingBtn = document.getElementById('refresh-telemetry-btn');
+                        if (pingBtn) {
+                            pingBtn.addEventListener('click', () => {
+                                pingBtn.disabled = true;
+                                const origHtml = pingBtn.innerHTML;
+                                pingBtn.innerHTML = `<span class="material-symbols-outlined text-[16px] text-primary animate-spin">refresh</span> Ping...`;
+                                setTimeout(() => {
+                                    pingBtn.innerHTML = `<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span> 18ms OK`;
+                                    setTimeout(() => {
+                                        pingBtn.innerHTML = origHtml;
+                                        pingBtn.disabled = false;
+                                    }, 1500);
+                                }, 600);
+                            });
+                        }
+                    })();
+            </script>
+        </main>
+    </div>
+<script src="/app.js"></script>
+</body>
+
+</html>

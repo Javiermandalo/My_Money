@@ -1,0 +1,4 @@
+⏰ Cron jobs programados (8:00 AM)
+(node:17464) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+🚀 Servidor corriendo en http://localhost:3000

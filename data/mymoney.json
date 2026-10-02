@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "javier",
+      "passwordHash": "$2a$10$4XK0G3yJ5ENZIubZhMoCyeJfY9MRHnZLrDfJmAAqj9Hq36r/GGKze",
+      "createdAt": 1790911706208
+    },
+    {
+      "id": 2,
+      "username": "angel",
+      "passwordHash": "$2a$10$1AS8uzSckhfr8flg.6ViheeN1RsbWQihFIDfzwVzR5efZdQO0UW.S",
+      "createdAt": 1790969262762
+    }
+  ],
+  "settings": {
+    "1": {
+      "monthly_budget": 140,
+      "currency": "MXN",
+      "theme": "dark"
+    },
+    "2": {
+      "monthly_budget": 15000,
+      "currency": "MXN",
+      "theme": "dark"
+    }
+  },
+  "categories": [],
+  "transactions": [],
+  "nextId": 3
+}

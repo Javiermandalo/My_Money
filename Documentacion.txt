@@ -1,0 +1,12 @@
+¡Por supuesto, Guillermo! Aquí tienes el código completo en **HTML5** con **Tailwind CSS** estructurado e integrado,
+listo para copiar, guardar como archivo `.html` y ejecutar directamente en cualquier navegador o servir en tu servidor
+Express / frontend. --- ### 1. `dashboard-desktop.html` (Versión Desktop / Web Dashboard) Guárdalo como `index.html` o
+`dashboard.html`. Utiliza Tailwind CSS (CDN), fuentes Inter y JetBrains Mono, e iconos Lucide: ```html
+
+``` --- ### 💡 Instrucciones para integrarlo con tu Backend Node.js / Express: 1. **Servir estáticos con
+Express**: ```javascript // En tu server.js const express = require('express'); const app = express();
+app.use(express.static('public')); // Guarda los html aquí dentro ``` 2. **Consumo Dinámico de la API de Notion**: -
+Reemplaza los valores fijos (`$184.50`, porcentajes y transacciones) agregando un simple script `fetch('/api/balance')`
+que inyecte los datos directo a los `id` de las etiquetas HTML. 3. No necesitas compilar CSS localmente; el script de
+CDN de Tailwind procesa todas las clases automáticamente en tiempo real. ¿Quieres que te prepare también el script en
+Node.js `notionService.js` con el cliente `@notionhq/client` para conectarlo a tus bases de datos?

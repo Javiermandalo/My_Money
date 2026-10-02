@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>My Money</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter']},colors:{surface:'#0f1419',container:'#151b24'}}}}</script>
+  <style>body{overscroll-behavior:none}::-webkit-scrollbar{display:none}</style>
+</head>
+<body class="bg-surface text-slate-100 font-sans antialiased flex flex-col min-h-screen">
+  <header class="sticky top-0 z-40 bg-surface/90 backdrop-blur border-b border-slate-800/60 px-4 h-14 flex items-center justify-between pt-safe">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-emerald-400">account_balance_wallet</span>
+      <h1 class="text-base font-semibold">My Money</h1>
+    </div>
+    <div class="flex items-center gap-1.5">
+      <button id="btn-settings" class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center transition"><span class="material-symbols-outlined text-slate-300">settings</span></button>
+      <button id="btn-logout" class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center transition"><span class="material-symbols-outlined text-slate-300">logout</span></button>
+    </div>
+  </header>
+  <main class="flex-1 flex flex-col px-4 pb-20 pt-3 space-y-4">
+    <section class="grid grid-cols-2 gap-2.5">
+      <div class="bg-container rounded-2xl p-4 border border-slate-800/60 flex flex-col justify-between">
+        <span class="text-xs text-slate-400">Balance disponible</span>
+        <div class="mt-1.5">
+          <div id="balance" class="text-2xl font-semibold">$0.00</div>
+          <div class="text-xs text-slate-400 mt-0.5">Ingresos - Gastos</div>
+        </div>
+      </div>
+      <div class="bg-container rounded-2xl p-4 border border-slate-800/60 flex flex-col justify-between">
+        <span class="text-xs text-slate-400">Presupuesto restante</span>
+        <div class="mt-1.5">
+          <div id="restante" class="text-2xl font-semibold text-emerald-400">$0.00</div>
+          <div class="text-xs text-slate-400 mt-0.5">vs. presupuesto mensual</div>
+        </div>
+        <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden mt-2.5">
+          <div id="progress" class="bg-emerald-500 h-full transition-all duration-500" style="width:0%"></div>
+        </div>
+        <div class="flex justify-between text-xs text-slate-400 mt-1.5"><span>Gastos</span><span id="porc">0%</span></div>
+      </div>
+      <div class="col-span-2 bg-container rounded-2xl p-4 border border-slate-800/60 flex items-center justify-between">
+        <div>
+          <span class="text-xs text-slate-400">Gastos este mes</span>
+          <div id="gastos" class="text-xl font-semibold mt-0.5">$0.00</div>
+        </div>
+        <div class="text-right">
+          <span class="text-xs text-slate-400">Ingresos este mes</span>
+          <div id="ingresos" class="text-xl font-semibold text-emerald-400 mt-0.5">$0.00</div>
+        </div>
+      </div>
+    </section>
+    <section class="bg-container rounded-2xl border border-slate-800/60 flex flex-col">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-slate-800/40">
+        <h2 class="text-sm font-medium">Transacciones</h2>
+        <button id="btn-add" class="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-3 py-1.5 rounded-xl text-sm font-medium transition active:scale-[0.995]"><span class="material-symbols-outlined text-base">add</span>Nueva</button>
+      </div>
+      <div id="tx-list" class="flex flex-col divide-y divide-slate-800/40 max-h-[50vh] overflow-y-auto"></div>
+      <div id="empty" class="p-6 text-center text-sm text-slate-400 hidden">Aún no hay transacciones</div>
+    </section>
+  </main>
+  <div id="fab-add" class="fixed bottom-5 right-4 z-40 lg:hidden">
+    <button class="w-14 h-14 rounded-full bg-emerald-500 text-slate-950 shadow-lg flex items-center justify-center active:scale-95"><span class="material-symbols-outlined text-2xl">add</span></button>
+  </div>
+  <div id="modal-tx" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center">
+    <div class="w-full sm:max-w-md bg-container rounded-t-2xl sm:rounded-2xl border border-slate-800/60 p-5 space-y-4 animate-in slide-in-from-bottom">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-medium">Nueva transacción</h3>
+        <button id="close-tx" class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <button data-type="expense" class="type-btn py-2 rounded-xl border border-slate-800 bg-slate-800/80 text-sm">Gasto</button>
+        <button data-type="income" class="type-btn py-2 rounded-xl border border-slate-800 text-slate-400 text-sm">Ingreso</button>
+      </div>
+      <div class="space-y-2">
+        <input id="tx-concept" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="Concepto (ej. Café 2.50)" />
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <input id="tx-amount" type="number" step="0.01" min="0" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="Monto" />
+        <input id="tx-date" type="date" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" />
+      </div>
+      <div class="space-y-2">
+        <select id="tx-cat" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm"></select>
+      </div>
+      <button id="save-tx" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl">Guardar</button>
+    </div>
+  </div>
+  <div id="modal-settings" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center">
+    <div class="w-full sm:max-w-md bg-container rounded-t-2xl sm:rounded-2xl border border-slate-800/60 p-5 space-y-5 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-medium">Ajustes</h3>
+        <button id="close-settings" class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="space-y-3">
+        <h4 class="text-xs text-slate-400 uppercase">Presupuesto</h4>
+        <div class="space-y-2">
+          <label class="text-xs text-slate-400">Presupuesto mensual</label>
+          <input id="set-budget" type="number" step="0.01" min="0" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" />
+        </div>
+      </div>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs text-slate-400 uppercase">Categorías</h4>
+          <button id="add-cat" class="flex items-center gap-1 text-xs text-emerald-400"><span class="material-symbols-outlined text-base">add</span>Agregar</button>
+        </div>
+        <div id="cats-list" class="space-y-2"></div>
+      </div>
+      <div class="space-y-3">
+        <h4 class="text-xs text-slate-400 uppercase">Datos</h4>
+        <button id="reset-data" class="w-full border border-red-500/40 text-red-400 py-2.5 rounded-xl hover:bg-red-500/10 transition">Reiniciar todo (desde cero)</button>
+      </div>
+      <button id="save-settings" class="w-full bg-emerald

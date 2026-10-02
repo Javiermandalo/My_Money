@@ -1,0 +1,15 @@
+{
+  "name": "my-money",
+  "version": "1.0.0",
+  "description": "App simple para administrar dinero",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "express-session": "^1.18.1"
+  }
+}
