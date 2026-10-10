@@ -1,2 +1,11 @@
-node_modules
+node_modules/
 .env
+.env.*
+!.env.example
+data/
+*.log
+*.pid
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

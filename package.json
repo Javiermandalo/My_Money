@@ -4,7 +4,8 @@
   "description": "App simple para administrar dinero",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "bot": "node src/bot.js"
   },
   "type": "commonjs",
   "dependencies": {

@@ -10,107 +10,202 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter']},colors:{surface:'#0f1419',container:'#151b24'}}}}</script>
-  <style>body{overscroll-behavior:none}::-webkit-scrollbar{display:none}</style>
+  <style>
+    body{overscroll-behavior:none}
+    ::-webkit-scrollbar{display:none}
+    .sheet{animation:slideUp .22s cubic-bezier(.32,.72,0,1)}
+    @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+    .fade{animation:fadeIn .18s ease}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .pop{animation:pop .18s cubic-bezier(.32,.72,0,1)}
+    @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+    input,select,button{outline:none}
+    input:focus,select:focus{border-color:#10b981}
+  </style>
 </head>
-<body class="bg-surface text-slate-100 font-sans antialiased flex flex-col min-h-screen">
-  <header class="sticky top-0 z-40 bg-surface/90 backdrop-blur border-b border-slate-800/60 px-4 h-14 flex items-center justify-between pt-safe">
+<body class="bg-surface text-slate-100 font-sans antialiased min-h-screen">
+  <header class="sticky top-0 z-40 bg-surface/90 backdrop-blur border-b border-slate-800/60 px-4 h-14 flex items-center justify-between">
     <div class="flex items-center gap-2">
       <span class="material-symbols-outlined text-emerald-400">account_balance_wallet</span>
       <h1 class="text-base font-semibold">My Money</h1>
     </div>
     <div class="flex items-center gap-1.5">
-      <button id="btn-settings" class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center transition"><span class="material-symbols-outlined text-slate-300">settings</span></button>
-      <button id="btn-logout" class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center transition"><span class="material-symbols-outlined text-slate-300">logout</span></button>
+      <span id="user-name" class="text-xs text-slate-400 mr-1"></span>
+      <button id="btn-categorias" class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center transition" title="Categorías">
+        <span class="material-symbols-outlined text-slate-300">category</span>
+      </button>
+      <button id="btn-ajustes" class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center transition" title="Ajustes">
+        <span class="material-symbols-outlined text-slate-300">settings</span>
+      </button>
+      <button id="btn-salir" class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center transition" title="Salir">
+        <span class="material-symbols-outlined text-slate-300">logout</span>
+      </button>
     </div>
   </header>
-  <main class="flex-1 flex flex-col px-4 pb-20 pt-3 space-y-4">
+
+  <main class="px-4 pb-28 pt-3 space-y-4 max-w-3xl mx-auto">
     <section class="grid grid-cols-2 gap-2.5">
-      <div class="bg-container rounded-2xl p-4 border border-slate-800/60 flex flex-col justify-between">
-        <span class="text-xs text-slate-400">Balance disponible</span>
-        <div class="mt-1.5">
-          <div id="balance" class="text-2xl font-semibold">$0.00</div>
-          <div class="text-xs text-slate-400 mt-0.5">Ingresos - Gastos</div>
-        </div>
+      <div class="bg-container rounded-2xl p-4 border border-slate-800/60">
+        <span class="text-xs text-slate-400">Balance</span>
+        <div id="balance" class="text-2xl font-semibold mt-1">$0.00</div>
+        <div class="text-xs text-slate-400 mt-0.5">Ingresos - Gastos</div>
       </div>
-      <div class="bg-container rounded-2xl p-4 border border-slate-800/60 flex flex-col justify-between">
+      <div class="bg-container rounded-2xl p-4 border border-slate-800/60">
         <span class="text-xs text-slate-400">Presupuesto restante</span>
-        <div class="mt-1.5">
-          <div id="restante" class="text-2xl font-semibold text-emerald-400">$0.00</div>
-          <div class="text-xs text-slate-400 mt-0.5">vs. presupuesto mensual</div>
-        </div>
-        <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden mt-2.5">
+        <div id="restante" class="text-2xl font-semibold text-emerald-400 mt-1">$0.00</div>
+        <div class="w-full bg-slate-900/60 h-1.5 rounded-full overflow-hidden mt-2">
           <div id="progress" class="bg-emerald-500 h-full transition-all duration-500" style="width:0%"></div>
         </div>
-        <div class="flex justify-between text-xs text-slate-400 mt-1.5"><span>Gastos</span><span id="porc">0%</span></div>
+        <div class="flex justify-between text-xs text-slate-400 mt-1.5">
+          <span id="gastos-label">Gastos</span>
+          <span id="porc">0%</span>
+        </div>
       </div>
       <div class="col-span-2 bg-container rounded-2xl p-4 border border-slate-800/60 flex items-center justify-between">
         <div>
-          <span class="text-xs text-slate-400">Gastos este mes</span>
+          <span class="text-xs text-slate-400">Gastos del mes</span>
           <div id="gastos" class="text-xl font-semibold mt-0.5">$0.00</div>
         </div>
         <div class="text-right">
-          <span class="text-xs text-slate-400">Ingresos este mes</span>
+          <span class="text-xs text-slate-400">Ingresos del mes</span>
           <div id="ingresos" class="text-xl font-semibold text-emerald-400 mt-0.5">$0.00</div>
         </div>
       </div>
     </section>
+
+    <section class="bg-container rounded-2xl border border-slate-800/60">
+      <div class="flex items-center justify-between px-4 py-2 border-b border-slate-800/40">
+        <h2 class="text-sm font-medium">Gastos por categoría</h2>
+        <button id="btn-ver-todas" class="text-xs text-emerald-400">Ver todo</button>
+      </div>
+      <div id="cat-breakdown" class="p-4 space-y-3"></div>
+    </section>
+
     <section class="bg-container rounded-2xl border border-slate-800/60 flex flex-col">
       <div class="flex items-center justify-between px-4 py-3 border-b border-slate-800/40">
-        <h2 class="text-sm font-medium">Transacciones</h2>
-        <button id="btn-add" class="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-3 py-1.5 rounded-xl text-sm font-medium transition active:scale-[0.995]"><span class="material-symbols-outlined text-base">add</span>Nueva</button>
+        <button id="mes-anterior" class="w-8 h-8 rounded-lg hover:bg-slate-800/60 flex items-center justify-center">
+          <span class="material-symbols-outlined text-slate-400">chevron_left</span>
+        </button>
+        <h2 id="mes-titulo" class="text-sm font-medium capitalize">Este mes</h2>
+        <button id="mes-siguiente" class="w-8 h-8 rounded-lg hover:bg-slate-800/60 flex items-center justify-center">
+          <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+        </button>
       </div>
-      <div id="tx-list" class="flex flex-col divide-y divide-slate-800/40 max-h-[50vh] overflow-y-auto"></div>
-      <div id="empty" class="p-6 text-center text-sm text-slate-400 hidden">Aún no hay transacciones</div>
+      <div id="filtros" class="px-4 py-2 flex gap-1.5 overflow-x-auto border-b border-slate-800/40">
+        <button data-filtro="all" class="filtro-btn shrink-0 px-3 py-1 rounded-full text-xs bg-slate-800/80">Todas</button>
+        <button data-filtro="expense" class="filtro-btn shrink-0 px-3 py-1 rounded-full text-xs text-slate-400">Gastos</button>
+        <button data-filtro="income" class="filtro-btn shrink-0 px-3 py-1 rounded-full text-xs text-slate-400">Ingresos</button>
+      </div>
+      <div id="tx-list" class="flex flex-col divide-y divide-slate-800/40"></div>
+      <div id="empty" class="p-8 text-center text-sm text-slate-400 hidden">Sin movimientos en este mes</div>
     </section>
   </main>
-  <div id="fab-add" class="fixed bottom-5 right-4 z-40 lg:hidden">
-    <button class="w-14 h-14 rounded-full bg-emerald-500 text-slate-950 shadow-lg flex items-center justify-center active:scale-95"><span class="material-symbols-outlined text-2xl">add</span></button>
+
+  <div id="fab" class="fixed bottom-5 right-4 z-40">
+    <button class="w-14 h-14 rounded-full bg-emerald-500 text-slate-950 shadow-lg flex items-center justify-center active:scale-95 transition">
+      <span class="material-symbols-outlined text-2xl">add</span>
+    </button>
   </div>
-  <div id="modal-tx" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center">
-    <div class="w-full sm:max-w-md bg-container rounded-t-2xl sm:rounded-2xl border border-slate-800/60 p-5 space-y-4 animate-in slide-in-from-bottom">
+
+  <div id="sheet-tx" class="sheet-bg fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-cerrar></div>
+    <div class="absolute bottom-0 left-0 right-0 sm:relative sm:m-auto sm:my-auto bg-container rounded-t-2xl sm:rounded-2xl border border-slate-800/60 p-5 space-y-4 sheet sm:max-w-md sm:w-full sm:pop">
       <div class="flex items-center justify-between">
-        <h3 class="text-base font-medium">Nueva transacción</h3>
-        <button id="close-tx" class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center"><span class="material-symbols-outlined">close</span></button>
+        <h3 id="tx-titulo" class="text-base font-medium">Nueva transacción</h3>
+        <button data-cerrar class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center">
+          <span class="material-symbols-outlined">close</span>
+        </button>
       </div>
       <div class="grid grid-cols-2 gap-2">
-        <button data-type="expense" class="type-btn py-2 rounded-xl border border-slate-800 bg-slate-800/80 text-sm">Gasto</button>
-        <button data-type="income" class="type-btn py-2 rounded-xl border border-slate-800 text-slate-400 text-sm">Ingreso</button>
+        <button data-tipo="expense" class="tipo-btn py-2 rounded-xl border border-slate-800 bg-slate-800/80 text-sm">Gasto</button>
+        <button data-tipo="income" class="tipo-btn py-2 rounded-xl border border-slate-800 text-slate-400 text-sm">Ingreso</button>
       </div>
-      <div class="space-y-2">
-        <input id="tx-concept" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="Concepto (ej. Café 2.50)" />
-      </div>
-      <div class="grid grid-cols-2 gap-2">
-        <input id="tx-amount" type="number" step="0.01" min="0" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="Monto" />
-        <input id="tx-date" type="date" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" />
-      </div>
-      <div class="space-y-2">
-        <select id="tx-cat" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm"></select>
-      </div>
-      <button id="save-tx" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl">Guardar</button>
+      <input id="tx-concepto" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="Concepto" />
+      <input id="tx-monto" type="number" step="0.01" min="0" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="Monto" />
+      <input id="tx-fecha" type="date" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" />
+      <select id="tx-categoria" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm"></select>
+      <p id="tx-error" class="text-xs text-red-400 hidden"></p>
+      <button id="tx-guardar" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl">Guardar</button>
     </div>
   </div>
-  <div id="modal-settings" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center">
-    <div class="w-full sm:max-w-md bg-container rounded-t-2xl sm:rounded-2xl border border-slate-800/60 p-5 space-y-5 max-h-[90vh] overflow-y-auto">
+
+  <div id="sheet-detalle" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-cerrar></div>
+    <div class="absolute bottom-0 left-0 right-0 sm:relative sm:m-auto sm:my-auto bg-container rounded-t-2xl sm:rounded-2xl border border-slate-800/60 p-5 space-y-4 sheet sm:max-w-md sm:w-full sm:pop">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-medium">Detalle</h3>
+        <button data-cerrar class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="text-center py-2">
+        <div id="det-monto" class="text-3xl font-semibold">$0.00</div>
+        <div id="det-concepto" class="text-sm text-slate-400 mt-1"></div>
+      </div>
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between"><span class="text-slate-400">Tipo</span><span id="det-tipo"></span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Categoría</span><span id="det-categoria"></span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Fecha</span><span id="det-fecha"></span></div>
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button id="det-editar" class="py-2.5 rounded-xl border border-slate-800 hover:bg-slate-800/60 text-sm">Editar</button>
+        <button id="det-borrar" class="py-2.5 rounded-xl border border-red-500/40 text-red-400 hover:bg-red-500/10 text-sm">Borrar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="sheet-categorias" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-cerrar></div>
+    <div class="absolute bottom-0 left-0 right-0 sm:relative sm:m-auto sm:my-auto bg-container rounded-t-2xl sm:rounded-2xl border border-slate-800/60 p-5 space-y-4 sheet sm:max-w-md sm:w-full sm:max-h-[90vh] sm:overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-medium">Categorías</h3>
+        <button data-cerrar class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <button id="cat-nueva-gasto" class="py-2.5 rounded-xl border border-slate-800 hover:bg-slate-800/60 text-sm text-xs">Nueva de gasto</button>
+        <button id="cat-nueva-ingreso" class="py-2.5 rounded-xl border border-slate-800 hover:bg-slate-800/60 text-sm text-xs">Nueva de ingreso</button>
+      </div>
+      <p class="text-xs text-slate-500">Al borrar una categoría, sus transacciones quedan sin categoría.</p>
+      <div id="cats-list" class="space-y-2"></div>
+    </div>
+  </div>
+
+  <div id="sheet-ajustes" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-cerrar></div>
+    <div class="absolute bottom-0 left-0 right-0 sm:relative sm:m-auto sm:my-auto bg-container rounded-t-2xl sm:rounded-2xl border border-slate-800/60 p-5 space-y-5 sheet sm:max-w-md sm:w-full sm:max-h-[90vh] sm:overflow-y-auto">
       <div class="flex items-center justify-between">
         <h3 class="text-base font-medium">Ajustes</h3>
-        <button id="close-settings" class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center"><span class="material-symbols-outlined">close</span></button>
+        <button data-cerrar class="w-9 h-9 rounded-full hover:bg-slate-800/60 flex items-center justify-center">
+          <span class="material-symbols-outlined">close</span>
+        </button>
       </div>
-      <div class="space-y-3">
-        <h4 class="text-xs text-slate-400 uppercase">Presupuesto</h4>
-        <div class="space-y-2">
-          <label class="text-xs text-slate-400">Presupuesto mensual</label>
-          <input id="set-budget" type="number" step="0.01" min="0" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" />
-        </div>
+      <div class="space-y-2">
+        <label class="text-xs text-slate-400">Presupuesto mensual</label>
+        <input id="set-presupuesto" type="number" step="0.01" min="0" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="0" />
+        <p class="text-xs text-slate-500">Deja 0 si no quieres un límite.</p>
       </div>
-      <div class="space-y-3">
-        <div class="flex items-center justify-between">
-          <h4 class="text-xs text-slate-400 uppercase">Categorías</h4>
-          <button id="add-cat" class="flex items-center gap-1 text-xs text-emerald-400"><span class="material-symbols-outlined text-base">add</span>Agregar</button>
-        </div>
-        <div id="cats-list" class="space-y-2"></div>
+      <div class="space-y-2">
+        <label class="text-xs text-slate-400">Moneda</label>
+        <select id="set-moneda" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm">
+          <option value="MXN">MXN - Peso mexicano</option>
+          <option value="USD">USD - Dólar</option>
+          <option value="EUR">EUR - Euro</option>
+        </select>
       </div>
-      <div class="space-y-3">
+      <div class="space-y-2 border-t border-slate-800/60 pt-4">
         <h4 class="text-xs text-slate-400 uppercase">Datos</h4>
-        <button id="reset-data" class="w-full border border-red-500/40 text-red-400 py-2.5 rounded-xl hover:bg-red-500/10 transition">Reiniciar todo (desde cero)</button>
+        <button id="set-reiniciar" class="w-full border border-red-500/40 text-red-400 py-2.5 rounded-xl hover:bg-red-500/10 text-sm">Reiniciar todo</button>
       </div>
-      <button id="save-settings" class="w-full bg-emerald
+      <button id="set-guardar" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl">Guardar cambios</button>
+    </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[60] hidden">
+    <div id="toast-msg" class="bg-slate-800 border border-slate-700 text-slate-100 text-sm px-4 py-2.5 rounded-xl shadow-lg"></div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

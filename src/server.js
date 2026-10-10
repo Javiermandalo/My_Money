@@ -25,36 +25,52 @@ function requireAuth(req, res, next) {
   next();
 }
 
+function iniciarBot() {
+  if (process.env.BOT_DESHABILITADO === '1') return;
+  require('./bot')
+    .start()
+    .catch((error) => console.error('El bot de Telegram no pudo iniciar:', error.message));
+}
+
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { username, password } = req.body;
-    if (!username || !password || password.length < 4) {
-      return res.status(400).json({ error: 'Usuario y contraseña (mín 4) requeridos' });
-    }
-    const existing = await db.getUserByUsername(username);
-    if (existing) return res.status(400).json({ error: 'Usuario ya existe' });
+    const username = String(req.body.username || '').trim();
+    const password = String(req.body.password || '');
+
+    if (username.length < 3) return res.status(400).json({ error: 'El usuario necesita al menos 3 caracteres' });
+    if (password.length < 4) return res.status(400).json({ error: 'La contraseña necesita al menos 4 caracteres' });
+
+    const existente = await db.getUserByUsername(username);
+    if (existente) return res.status(400).json({ error: 'Ese usuario ya existe' });
+
     const hash = await bcrypt.hash(password, 10);
     const user = await db.createUser(username, hash);
     req.session.userId = user.id;
     req.session.username = user.username;
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: 'Error al registrar' });
+    console.error(err);
+    res.status(500).json({ error: 'No se pudo crear la cuenta' });
   }
 });
 
 app.post('/api/auth/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const username = String(req.body.username || '').trim();
+    const password = String(req.body.password || '');
+
     const user = await db.getUserByUsername(username);
     if (!user) return res.status(400).json({ error: 'Credenciales inválidas' });
+
     const ok = await bcrypt.compare(password, user.passwordHash);
     if (!ok) return res.status(400).json({ error: 'Credenciales inválidas' });
+
     req.session.userId = user.id;
     req.session.username = user.username;
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: 'Error al iniciar sesión' });
+    console.error(err);
+    res.status(500).json({ error: 'No se pudo iniciar sesión' });
   }
 });
 
@@ -67,8 +83,7 @@ app.get('/api/auth/me', requireAuth, (req, res) => {
 });
 
 app.get('/api/settings', requireAuth, async (req, res) => {
-  const s = await db.getSettings(req.session.userId);
-  res.json(s);
+  res.json(await db.getSettings(req.session.userId));
 });
 
 app.put('/api/settings', requireAuth, async (req, res) => {
@@ -77,13 +92,13 @@ app.put('/api/settings', requireAuth, async (req, res) => {
 });
 
 app.get('/api/categories', requireAuth, async (req, res) => {
-  const c = await db.getCategories(req.session.userId);
-  res.json(c);
+  res.json(await db.getCategories(req.session.userId));
 });
 
 app.post('/api/categories', requireAuth, async (req, res) => {
-  const c = await db.addCategory(req.session.userId, req.body.name, req.body.type);
-  res.json(c);
+  const name = String(req.body.name || '').trim();
+  if (!name) return res.status(400).json({ error: 'Falta el nombre de la categoría' });
+  res.json(await db.addCategory(req.session.userId, name, req.body.type));
 });
 
 app.put('/api/categories/:id', requireAuth, async (req, res) => {
@@ -97,13 +112,42 @@ app.delete('/api/categories/:id', requireAuth, async (req, res) => {
 });
 
 app.get('/api/transactions', requireAuth, async (req, res) => {
-  const t = await db.getTransactions(req.session.userId);
-  res.json(t);
+  const filtro = {};
+  if (req.query.m) filtro.mes = Number(req.query.m);
+  if (req.query.anio) filtro.anio = Number(req.query.anio);
+  if (req.query.tipo) filtro.tipo = req.query.tipo;
+  if (req.query.categoria) filtro.categoria = req.query.categoria;
+
+  res.json(await db.getTransactions(req.session.userId, filtro));
 });
 
 app.post('/api/transactions', requireAuth, async (req, res) => {
-  const t = await db.addTransaction(req.session.userId, req.body.concept, req.body.amount, req.body.type, req.body.category_id, req.body.date);
-  res.json(t);
+  const concepto = String(req.body.concept || '').trim();
+  const amount = Number(req.body.amount);
+
+  if (!concepto) return res.status(400).json({ error: 'Falta el concepto' });
+  if (!Number.isFinite(amount) || amount <= 0) return res.status(400).json({ error: 'El monto debe ser mayor que cero' });
+
+  const fecha = req.body.date || new Date().toISOString().slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha)) return res.status(400).json({ error: 'Fecha inválida' });
+
+  res.json(await db.addTransaction(req.session.userId, concepto, amount, req.body.type, req.body.category_id, fecha));
+});
+
+app.put('/api/transactions/:id', requireAuth, async (req, res) => {
+  const campos = {};
+  if (req.body.concept !== undefined) campos.concept = req.body.concept;
+  if (req.body.amount !== undefined) {
+    const amount = Number(req.body.amount);
+    if (!Number.isFinite(amount) || amount <= 0) return res.status(400).json({ error: 'El monto debe ser mayor que cero' });
+    campos.amount = amount;
+  }
+  if (req.body.type !== undefined) campos.type = req.body.type;
+  if (req.body.category_id !== undefined) campos.category_id = req.body.category_id;
+  if (req.body.date !== undefined) campos.date = req.body.date;
+
+  await db.updateTransaction(req.session.userId, req.params.id, campos);
+  res.json({ success: true });
 });
 
 app.delete('/api/transactions/:id', requireAuth, async (req, res) => {
@@ -112,18 +156,10 @@ app.delete('/api/transactions/:id', requireAuth, async (req, res) => {
 });
 
 app.get('/api/summary', requireAuth, async (req, res) => {
-  const settings = await db.getSettings(req.session.userId);
-  const tx = await db.getTransactions(req.session.userId);
-  let ingresos = 0, gastos = 0;
-  tx.forEach((t) => {
-    if (t.type === 'income') ingresos += Number(t.amount || 0);
-    else gastos += Number(t.amount || 0);
-  });
-  const limite = settings.monthly_budget || 0;
-  const balance = ingresos - gastos;
-  const restante = limite > 0 ? Math.max(limite - gastos, 0) : balance;
-  const porcentaje = limite > 0 ? Math.min((gastos / limite) * 100, 100) : 0;
-  res.json({ ingresos, gastos, balance, restante, limite, porcentaje: Number(porcentaje.toFixed(2)) });
+  const filtro = {};
+  if (req.query.m) filtro.mes = Number(req.query.m);
+  if (req.query.anio) filtro.anio = Number(req.query.anio);
+  res.json(await db.getResumen(req.session.userId, filtro));
 });
 
 app.post('/api/reset', requireAuth, async (req, res) => {
@@ -134,4 +170,7 @@ app.post('/api/reset', requireAuth, async (req, res) => {
 app.get('/app', (req, res) => res.sendFile(path.join(__dirname, '../public', 'app.html')));
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../public', 'index.html')));
 
-app.listen(PORT, () => console.log('🚀 MyMoney corriendo en http://localhost:' + PORT));
+app.listen(PORT, () => {
+  console.log('My Money web en http://localhost:' + PORT);
+  iniciarBot();
+});

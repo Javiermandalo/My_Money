@@ -1,21 +1,18 @@
-const admin = require('firebase-admin');
+const { initializeApp, getApps, cert } = require('firebase-admin/app');
+const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 require('dotenv').config();
 
-if (!admin.apps.length) {
-  const privateKey = process.env.FIREBASE_PRIVATE_KEY
-    ? process.env.FIREBASE_PRIVATE_KEY.replace(/\n/g, '\n')
-    : undefined;
-
-  admin.initializeApp({
-    credential: admin.credential.cert({
+if (!getApps().length) {
+  let pk = process.env.FIREBASE_PRIVATE_KEY || '';
+  pk = pk.replace(/^"|"$/g, '').replace(/\n/g, '\n');
+  initializeApp({
+    credential: cert({
       projectId: process.env.FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey,
+      privateKey: pk,
     }),
   });
 }
 
-const db = admin.firestore();
-const FieldValue = admin.firestore.FieldValue;
-
-module.exports = { admin, db, FieldValue };
+const db = getFirestore();
+module.exports = { db, FieldValue };
