@@ -10,6 +10,11 @@ const CATEGORIAS_INICIALES = [
   { name: 'Otros ingresos', type: 'income' },
 ];
 
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+const PHONE_REGEX = /^\+?[1-9]\d{1,14}$/;
+const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,}$/;
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+
 function mesActual() {
   const d = new Date();
   return { anio: d.getFullYear(), mes: d.getMonth() + 1 };
@@ -19,17 +24,87 @@ function claveMes(anio, mes) {
   return anio + '-' + String(mes).padStart(2, '0');
 }
 
-async function getUserByUsername(username) {
-  const snap = await db.collection('users').where('username', '==', username).limit(1).get();
-  if (snap.empty) return null;
-  const doc = snap.docs[0];
-  return { id: doc.id, username: doc.data().username, passwordHash: doc.data().passwordHash };
+function normalizarTelefono(phone) {
+  if (!phone) return null;
+  let p = phone.trim().replace(/\s/g, '');
+  if (!p.startsWith('+')) p = '+' + p;
+  return p;
 }
 
-async function createUser(username, passwordHash) {
+function validarEmail(email) {
+  return EMAIL_REGEX.test(email.trim());
+}
+
+function validarTelefono(phone) {
+  if (!phone) return true;
+  return PHONE_REGEX.test(normalizarTelefono(phone));
+}
+
+function validarUsername(username) {
+  return USERNAME_REGEX.test(username.trim());
+}
+
+function validarPassword(password) {
+  return PASSWORD_REGEX.test(password);
+}
+
+async function getUserByUsername(username) {
+  const snap = await db.collection('users').where('username', '==', username.trim()).limit(1).get();
+  if (snap.empty) return null;
+  const doc = snap.docs[0];
+  return { id: doc.id, ...doc.data() };
+}
+
+async function getUserByEmail(email) {
+  const snap = await db.collection('users').where('email', '==', email.trim().toLowerCase()).limit(1).get();
+  if (snap.empty) return null;
+  const doc = snap.docs[0];
+  return { id: doc.id, ...doc.data() };
+}
+
+async function getUserByPhone(phone) {
+  const norm = normalizarTelefono(phone);
+  if (!norm) return null;
+  const snap = await db.collection('users').where('phone', '==', norm).limit(1).get();
+  if (snap.empty) return null;
+  const doc = snap.docs[0];
+  return { id: doc.id, ...doc.data() };
+}
+
+async function getUserByEmailOrPhone(identifier) {
+  const email = identifier?.trim()?.toLowerCase();
+  const phone = normalizarTelefono(identifier);
+  
+  if (email && validarEmail(email)) {
+    const byEmail = await getUserByEmail(email);
+    if (byEmail) return byEmail;
+  }
+  if (phone && validarTelefono(phone)) {
+    const byPhone = await getUserByPhone(phone);
+    if (byPhone) return byPhone;
+  }
+  return null;
+}
+
+async function getUserByResetToken(token) {
+  const snap = await db.collection('users').where('resetToken', '==', token).limit(1).get();
+  if (snap.empty) return null;
+  const doc = snap.docs[0];
+  const data = doc.data();
+  if (!data.resetTokenExpires || new Date(data.resetTokenExpires) <= new Date()) {
+    return null;
+  }
+  return { id: doc.id, ...data };
+}
+
+async function createUser(username, email, passwordHash, phone) {
   const ref = await db.collection('users').add({
     username: username.trim(),
+    email: email.trim().toLowerCase(),
+    phone: phone ? normalizarTelefono(phone) : null,
     passwordHash,
+    emailVerified: false,
+    phoneVerified: false,
     createdAt: FieldValue.serverTimestamp(),
   });
 
@@ -53,7 +128,52 @@ async function createUser(username, passwordHash) {
   });
 
   await batch.commit();
-  return { id: ref.id, username: username.trim() };
+  return { id: ref.id, username: username.trim(), email: email.trim().toLowerCase(), phone: phone ? normalizarTelefono(phone) : null };
+}
+
+async function setEmailVerified(uid, verified) {
+  await db.collection('users').doc(uid).update({ emailVerified: verified });
+}
+
+async function setPhoneVerified(uid, verified) {
+  await db.collection('users').doc(uid).update({ phoneVerified: verified });
+}
+
+async function setResetToken(uid, token, expiresAt) {
+  await db.collection('users').doc(uid).update({
+    resetToken: token,
+    resetTokenExpires: expiresAt,
+  });
+}
+
+async function clearResetToken(uid) {
+  await db.collection('users').doc(uid).update({
+    resetToken: FieldValue.delete(),
+    resetTokenExpires: FieldValue.delete(),
+  });
+}
+
+async function updatePassword(uid, newHash) {
+  await db.collection('users').doc(uid).update({ passwordHash: newHash });
+  await clearResetToken(uid);
+}
+
+async function deleteTestUsers() {
+  const snap = await db.collection('users').get();
+  const batch = db.batch();
+  for (const doc of snap.docs) {
+    const data = doc.data();
+    if (data.username?.startsWith('test') || data.username === 'demo' || data.username === 'Javier') {
+      const cats = await doc.ref.collection('categories').get();
+      const txs = await doc.ref.collection('transactions').get();
+      const settings = await doc.ref.collection('settings').get();
+      cats.docs.forEach(d => batch.delete(d.ref));
+      txs.docs.forEach(d => batch.delete(d.ref));
+      settings.docs.forEach(d => batch.delete(d.ref));
+      batch.delete(doc.ref);
+    }
+  }
+  await batch.commit();
 }
 
 async function getSettings(uid) {
@@ -247,7 +367,17 @@ async function resetUser(uid) {
 
 module.exports = {
   getUserByUsername,
+  getUserByEmail,
+  getUserByPhone,
+  getUserByEmailOrPhone,
+  getUserByResetToken,
   createUser,
+  setEmailVerified,
+  setPhoneVerified,
+  setResetToken,
+  clearResetToken,
+  updatePassword,
+  deleteTestUsers,
   getSettings,
   setSettings,
   getCategories,
@@ -261,4 +391,9 @@ module.exports = {
   getResumen,
   resetUser,
   mesActual,
+  validarEmail,
+  validarTelefono,
+  validarUsername,
+  validarPassword,
+  normalizarTelefono,
 };

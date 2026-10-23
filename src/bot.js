@@ -76,7 +76,8 @@ function parsearMensaje(text) {
 async function obtenerVinculo(chatId) {
   const snap = await db.collection('vinculos').where('chatId', '==', chatId).limit(1).get();
   if (snap.empty) return null;
-  return snap.docs[0].data();
+  const doc = snap.docs[0];
+  return { id: doc.id, ...doc.data() };
 }
 
 async function obtenerResumen(userId) {

@@ -10,58 +10,190 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter']},colors:{surface:'#0f1419',container:'#151b24'}}}}</script>
-  <style>body{overscroll-behavior:none}</style>
+  <style>
+    body{overscroll-behavior:none}
+    ::-webkit-scrollbar{display:none}
+    .screen{display:none}
+    .screen.active{display:block;animation:fadeIn .2s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    input:focus,select:focus{border-color:#10b981;outline:none}
+    .btn{transition:all .15s ease}
+    .btn:active{transform:scale(.98)}
+    .shake{animation:shake .4s ease}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  </style>
 </head>
-<body class="bg-surface text-slate-100 font-sans antialiased">
-  <div class="min-h-screen flex flex-col items-center justify-center px-4">
-    <div class="w-full max-w-sm">
-      <div class="flex flex-col items-center mb-8">
-        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-3">
-          <span class="material-symbols-outlined text-3xl">account_balance_wallet</span>
-        </div>
-        <h1 class="text-2xl font-semibold">My Money</h1>
-        <p class="text-sm text-slate-400 mt-1">Administra tu dinero de forma simple</p>
+<body class="bg-surface text-slate-100 font-sans antialiased min-h-screen flex items-center justify-center px-4 py-8">
+  <div class="w-full max-w-sm">
+    <div class="flex flex-col items-center mb-8">
+      <div class="w-14 h-14 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-3">
+        <span class="material-symbols-outlined text-3xl">account_balance_wallet</span>
       </div>
-      <div id="auth-card" class="bg-container/90 backdrop-blur rounded-2xl border border-slate-800/60 shadow-lg p-6 space-y-5">
-        <div class="flex gap-2 p-1 bg-slate-900/60 rounded-xl">
-          <button id="tab-login" class="flex-1 py-2 text-sm rounded-lg bg-slate-800 text-slate-100 font-medium">Iniciar sesión</button>
-          <button id="tab-register" class="flex-1 py-2 text-sm rounded-lg text-slate-400 hover:text-slate-200 transition">Crear cuenta</button>
+      <h1 class="text-2xl font-semibold">My Money</h1>
+      <p class="text-sm text-slate-400 mt-1">Administra tu dinero de forma simple</p>
+    </div>
+
+    <!-- PANTALLA 1: REGISTRO -->
+    <div id="screen-register" class="screen bg-container/90 backdrop-blur rounded-2xl border border-slate-800/60 shadow-lg p-6 space-y-5">
+      <h2 class="text-lg font-semibold text-center">Crear cuenta</h2>
+      <p class="text-xs text-slate-400 text-center">Todos los campos son obligatorios excepto teléfono</p>
+      
+      <form id="form-register" class="space-y-4" novalidate>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">Usuario</label>
+          <input id="reg-username" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="usuario" autocomplete="username" />
+          <p id="err-reg-username" class="text-xs text-red-400 mt-1 hidden"></p>
         </div>
-        <form id="form-login" class="space-y-4">
-          <div class="space-y-2">
-            <label class="text-xs text-slate-400">Usuario</label>
-            <input id="login-user" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40" placeholder="tu_usuario" />
-          </div>
-          <div class="space-y-2">
-            <label class="text-xs text-slate-400">Contraseña</label>
-            <input id="login-pass" type="password" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40" placeholder="••••••" />
-          </div>
-          <button class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl transition active:scale-[0.995]">Entrar</button>
-          <p id="login-err" class="text-xs text-red-400 text-center hidden"></p>
-        </form>
-        <form id="form-register" class="space-y-4 hidden">
-          <div class="space-y-2">
-            <label class="text-xs text-slate-400">Usuario</label>
-            <input id="reg-user" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40" placeholder="elige_usuario" />
-          </div>
-          <div class="space-y-2">
-            <label class="text-xs text-slate-400">Contraseña</label>
-            <input id="reg-pass" type="password" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/40" placeholder="mín 4 caracteres" />
-          </div>
-          <button class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl transition active:scale-[0.995]">Crear cuenta</button>
-          <p id="reg-err" class="text-xs text-red-400 text-center hidden"></p>
-        </form>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">Email</label>
+          <input id="reg-email" type="email" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="tu@email.com" autocomplete="email" required />
+          <p id="err-reg-email" class="text-xs text-red-400 mt-1 hidden"></p>
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">Teléfono (opcional)</label>
+          <input id="reg-phone" type="tel" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="+52 1 234 567 8901" autocomplete="tel" />
+          <p id="err-reg-phone" class="text-xs text-slate-500 mt-1 hidden">Formato: +52 1 234 567 8901</p>
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">Contraseña</label>
+          <input id="reg-password" type="password" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="••••••••" autocomplete="new-password" required />
+          <p id="err-reg-password" class="text-xs text-red-400 mt-1 hidden"></p>
+          <p class="text-xs text-slate-500 mt-1">8+ chars, mayúscula, minúscula, número, símbolo</p>
+        </div>
+        <button id="btn-register" class="w-full btn bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl" type="submit">Crear cuenta</button>
+        <p id="err-register" class="text-xs text-red-400 text-center hidden"></p>
+      </form>
+      <p class="text-xs text-slate-400 text-center mt-4">
+        ¿Ya tienes cuenta? <button id="link-to-login" type="button" class="text-emerald-400 hover:underline">Iniciar sesión</button>
+      </p>
+    </div>
+
+    <!-- PANTALLA 2: LOGIN PASO 1 - EMAIL/TELÉFONO -->
+    <div id="screen-login1" class="screen bg-container/90 backdrop-blur rounded-2xl border border-slate-800/60 shadow-lg p-6 space-y-5">
+      <h2 class="text-lg font-semibold text-center">Iniciar sesión</h2>
+      <p class="text-xs text-slate-400 text-center">Ingresa tu email o teléfono</p>
+      
+      <form id="form-login1" class="space-y-4" novalidate>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">Email o Teléfono</label>
+          <input id="login-identifier" type="text" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="tu@email.com o +52 1 234 567 8901" autocomplete="username" required />
+          <p id="err-login-identifier" class="text-xs text-red-400 mt-1 hidden"></p>
+        </div>
+        <button id="btn-login-continue" class="w-full btn bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl" type="submit">Continuar</button>
+        <p id="err-login1" class="text-xs text-red-400 text-center hidden"></p>
+      </form>
+      <div class="flex justify-center gap-4 text-xs text-slate-400 mt-2">
+        <button id="link-login1-forgot" type="button" class="text-emerald-400 hover:underline">¿Olvidaste contraseña?</button>
+        <button id="link-to-register" type="button" class="text-emerald-400 hover:underline">Crear cuenta</button>
       </div>
-      <div id="onboarding" class="bg-container/90 backdrop-blur rounded-2xl border border-slate-800/60 shadow-lg p-6 space-y-5 hidden">
-        <div class="text-center space-y-2">
-          <h2 class="text-lg font-semibold">Configura tu presupuesto</h2>
-          <p class="text-sm text-slate-400">Todo empieza desde cero. Puedes cambiarlo cuando quieras.</p>
+    </div>
+
+    <!-- PANTALLA 3: LOGIN PASO 2 - CONTRASEÑA -->
+    <div id="screen-login2" class="screen bg-container/90 backdrop-blur rounded-2xl border border-slate-800/60 shadow-lg p-6 space-y-5">
+      <div class="text-center mb-2">
+        <h2 class="text-lg font-semibold">Bienvenido <span id="login2-welcome-name" class="text-emerald-400"></span></h2>
+        <p class="text-xs text-slate-400 mt-1">Ingresa tu contraseña</p>
+      </div>
+      
+      <form id="form-login2" class="space-y-4" novalidate>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">Contraseña</label>
+          <div class="relative">
+            <input id="login2-password" type="password" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm pr-10" placeholder="••••••••" autocomplete="current-password" required />
+            <button id="btn-toggle-password" type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200">
+              <span class="material-symbols-outlined" id="icon-eye">visibility</span>
+            </button>
+          </div>
+          <p id="err-login2-password" class="text-xs text-red-400 mt-1 hidden"></p>
         </div>
-        <div class="space-y-2">
-          <label class="text-xs text-slate-400">Presupuesto mensual (MXN)</label>
-          <input id="budget-input" type="number" step="0.01" min="0" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-center text-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/40" placeholder="0.00" />
+        <button id="btn-login2-enter" class="w-full btn bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl" type="submit">Entrar</button>
+        <p id="err-login2" class="text-xs text-red-400 text-center hidden"></p>
+      </form>
+      <div class="flex justify-between text-xs text-slate-400 mt-2">
+        <button id="link-login2-back" type="button" class="text-emerald-400 hover:underline">← Volver</button>
+        <button id="link-login2-forgot" type="button" class="text-emerald-400 hover:underline">¿Olvidaste contraseña?</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 4: VERIFICACIÓN EMAIL -->
+    <div id="screen-verify" class="screen bg-container/90 backdrop-blur rounded-2xl border border-slate-800/60 shadow-lg p-6 space-y-5">
+      <div class="text-center mb-4">
+        <div class="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
+          <span class="material-symbols-outlined text-3xl text-emerald-400">mark_email_read</span>
         </div>
-        <button id="btn-continue" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl transition">Continuar</button>
+        <h2 class="text-lg font-semibold">Verifica tu email</h2>
+        <p class="text-xs text-slate-400 mt-1">Enviamos un código de 6 dígitos a <span id="verify-email-display" class="text-slate-300 font-medium"></span></p>
+      </div>
+      
+      <form id="form-verify" class="space-y-4" novalidate>
+        <div class="flex gap-3 justify-center">
+          <input type="text" maxlength="1" class="code-input w-10 h-12 bg-slate-900/60 border border-slate-800 rounded-xl text-center text-xl text-sm focus:border-emerald-500" inputmode="numeric" />
+          <input type="text" maxlength="1" class="code-input w-10 h-12 bg-slate-900/60 border border-slate-800 rounded-xl text-center text-xl text-sm focus:border-emerald-500" inputmode="numeric" />
+          <input type="text" maxlength="1" class="code-input w-10 h-12 bg-slate-900/60 border border-slate-800 rounded-xl text-center text-xl text-sm focus:border-emerald-500" inputmode="numeric" />
+          <input type="text" maxlength="1" class="code-input w-10 h-12 bg-slate-900/60 border border-slate-800 rounded-xl text-center text-xl text-sm focus:border-emerald-500" inputmode="numeric" />
+          <input type="text" maxlength="1" class="code-input w-10 h-12 bg-slate-900/60 border border-slate-800 rounded-xl text-center text-xl text-sm focus:border-emerald-500" inputmode="numeric" />
+          <input type="text" maxlength="1" class="code-input w-10 h-12 bg-slate-900/60 border border-slate-800 rounded-xl text-center text-xl text-sm focus:border-emerald-500" inputmode="numeric" />
+        </div>
+        <button id="btn-verify" class="w-full btn bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl" type="submit">Verificar</button>
+        <p id="err-verify" class="text-xs text-red-400 text-center hidden"></p>
+      </form>
+      <div class="text-center text-xs text-slate-400">
+        <p class="mb-1">¿No llegó? Revisa spam.</p>
+        <button id="btn-resend-verification" type="button" class="text-emerald-400 hover:underline">Reenviar código</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 5: RECUPERAR CONTRASEÑA -->
+    <div id="screen-forgot" class="screen bg-container/90 backdrop-blur rounded-2xl border border-slate-800/60 shadow-lg p-6 space-y-5">
+      <div class="text-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-amber-500/10 flex items-center justify-center mx-auto mb-3">
+          <span class="material-symbols-outlined text-3xl text-amber-400">lock_reset</span>
+        </div>
+        <h2 class="text-lg font-semibold">Recuperar contraseña</h2>
+        <p class="text-xs text-slate-400 mt-1">Ingresa tu email o teléfono para recibir un código</p>
+      </div>
+      
+      <form id="form-forgot" class="space-y-4" novalidate>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">Email o Teléfono</label>
+          <input id="forgot-identifier" type="text" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="tu@email.com o +52 1 234 567 8901" autocomplete="username" required />
+          <p id="err-forgot-identifier" class="text-xs text-red-400 mt-1 hidden"></p>
+        </div>
+        <button id="btn-forgot-send" class="w-full btn bg-amber-500 hover:bg-amber-400 text-slate-950 font-medium py-2.5 rounded-xl" type="submit">Enviar código</button>
+        <p id="err-forgot" class="text-xs text-red-400 text-center hidden"></p>
+      </form>
+      <div class="text-center text-xs text-slate-400 mt-4">
+        <button id="link-forgot-back" type="button" class="text-emerald-400 hover:underline">← Volver al inicio</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 6: RESET CONTRASEÑA -->
+    <div id="screen-reset" class="screen bg-container/90 backdrop-blur rounded-2xl border border-slate-800/60 shadow-lg p-6 space-y-5">
+      <div class="text-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
+          <span class="material-symbols-outlined text-3xl text-emerald-400">key</span>
+        </div>
+        <h2 class="text-lg font-semibold">Nueva contraseña</h2>
+        <p class="text-xs text-slate-400 mt-1">Tu código de verificación ya fue validado</p>
+      </div>
+      
+      <form id="form-reset" class="space-y-4" novalidate>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">Nueva contraseña</label>
+          <input id="reset-password" type="password" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="••••••••" autocomplete="new-password" required />
+          <p id="err-reset-password" class="text-xs text-red-400 mt-1 hidden"></p>
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">Confirmar contraseña</label>
+          <input id="reset-confirm" type="password" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2.5 text-sm" placeholder="••••••••" autocomplete="new-password" required />
+          <p id="err-reset-confirm" class="text-xs text-red-400 mt-1 hidden"></p>
+        </div>
+        <input type="hidden" id="reset-token" />
+        <button id="btn-reset-save" class="w-full btn bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-medium py-2.5 rounded-xl" type="submit">Guardar nueva contraseña</button>
+        <p id="err-reset" class="text-xs text-red-400 text-center hidden"></p>
+      </form>
+      <div class="text-center text-xs text-slate-400 mt-4">
+        <button id="link-reset-back" type="button" class="text-emerald-400 hover:underline">← Volver al inicio</button>
       </div>
     </div>
   </div>
